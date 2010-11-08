@@ -1,0 +1,17 @@
+
+CXX			:= g++
+CXXFLAGS	:= -O0 -g -Wall
+
+all: driver
+	
+run: all
+	./driver
+	
+test: all
+	./driver -exit_on_fail
+
+driver: driver.o
+	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS) $(LIBS)
+
+.PHONY: all run test
+

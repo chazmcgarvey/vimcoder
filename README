@@ -1,0 +1,68 @@
+
+VimCoder
+--------
+
+The TopCoder Arena editor plug-in providing support for Vim.
+
+The version is very experimental, and I haven't gotten around to writing
+any substantial documentation.  It is also not very configurable without
+changing the code.  All of these problems will be remedied eventually.
+
+
+Features:
+
+- Use Vim to edit your TopCoder Arena problems!
+- Keeps track of code files locally and syncs with the server, so no more
+  copy and pasting to and from the Arena applet.
+- Works with any language.
+- Downloads and stores a copy of the problem statement with your code for
+  off-line viewing.
+- Basic support for templates (currently C++ only).
+- Local test-case drivers can be automatically created with the example
+  test-case data (currently C++ only, and has bugs).
+
+
+Compatibility:
+
+I've tested the plug-in only on my own computer which runs x86_64 Linux.
+It should work on other setups, but note the following:
+
+- The program "gvim" should be in your PATH.
+- Vim needs to be compiled with client/server support.  To check, make sure
+  the command "vim --version | grep +clientserver" prints something.
+- The test-case driver generated for C++ uses POSIX functions for timing,
+  so it may not compile on non-POSIX systems (i.e. Windows).  The C++Driver
+  template simply needs to be changed to support other timing functions.
+
+
+How To Install:
+
+Assuming you have the downloaded the VimCoder jar file:
+
+- Run the TopCoder Arena applet.
+- Click the "Options" menu and select "Editor" to show the editor
+  preferences.
+- Click the "Add" button to bring up a new window.
+- For "Name," type "Vim" or whatever you want to represent this plug-in.
+- For "EntryPoint," type "com.dogcows.VimCoder" without the quotes.
+- For "ClassPath," click on "Browse" and locate the VimCoder jar file.  The
+  third field should now have the path to the jar file.
+- Click "OK" to close the window with the three fields.
+- Click "Save."
+
+You should now be able select "Vim" (or whatever you entered the first
+field) to use the plug-in.  If it doesn't work (i.e. nothing happens), you
+may need to restart the applet or set the plug-in as the default editor.
+Your mileage may vary.
+
+
+Known Bugs:
+
+- Lack of documentation.  The code itself is also poorly documented.
+- Only C++ templates are provided.
+- The generated C++ driver code won't compile when the method has one or
+  more parameters that are vectors (i.e. vectors of strings).
+- The $CARAT$ token doesn't seem to work in the templates.
+- Directory where code and problem data is saved is hardcoded at
+  ~/.vimcoder.  This should be configurable.
+

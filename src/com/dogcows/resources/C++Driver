@@ -1,0 +1,102 @@
+
+#include "$CLASSNAME$.cc"
+
+#include <iostream>
+#include <sstream>
+#include <sys/time.h>
+
+static bool		__exit_on_fail = false;
+static int		__pass = 0;
+static int		__fail = 0;
+static double	__time = 0.0;
+
+static void __timer_start()
+{
+	struct timeval tv;
+	if (gettimeofday(&tv, NULL) == 0)
+	{
+		__time = (double)tv.tv_sec + (double)tv.tv_usec * 0.000001;
+	}
+}
+
+static double __timer_stop()
+{
+	double start = __time;
+	__timer_start();
+	return __time - start;
+}
+
+template <class T>
+std::string __encode(const T& in)
+{
+	std::ostringstream s;
+	s << in;
+	return s.str();
+}
+
+std::string __encode(const std::string& in)
+{
+	std::ostringstream s;
+	s << '"' << in << '"';
+	return s.str();
+}
+
+template <class T>
+std::string __join(const std::vector<T>& in, const std::string& glue)
+{
+	if (in.size() == 0) return "";
+	std::ostringstream s;
+	s << __encode(in[0]);
+	for (size_t i = 1; i < in.size(); ++i) s << glue << __encode(in[i]);
+	return s.str();
+}
+
+template <class T>
+std::string __encode(const std::vector<T>& in)
+{
+	std::ostringstream s;
+	s << "{ " << __join(in, ",  ") << " }";
+	return s.str();
+}
+
+void __do_test(const std::string& expected, $METHODPARAMS$)
+{
+	static int testNum = 0;
+	std::cout << "----------------------------------------" << std::endl
+			  << "Test " << testNum++ << ": ";
+
+	__timer_start();
+	
+	$CLASSNAME$ object;
+	$RETURNTYPE$ ret = object.$METHODNAME$($METHODPARAMNAMES$);
+	
+	double t = __timer_stop();
+	
+	std::string actual = __encode(ret);
+	if (actual == expected)
+	{
+		std::cout << "[PASS] in " << t << " seconds." << std::endl;
+		++__pass;
+	}
+	else
+	{
+		std::cout << "[FAIL] in " << t << " seconds." << std::endl
+				  << "   Actual: " << actual << std::endl
+				  << " Expected: " << expected << std::endl;
+		++__fail;
+		if (__exit_on_fail) exit(1);
+	}
+}
+
+int main(int argc, char* argv[])
+{
+	if (1 < argc) __exit_on_fail = true;
+
+$TESTCASES$
+	std::cout << "========================================" << std::endl
+			  << " Total Pass: " << __pass << std::endl
+			  << " Total Fail: " << __fail << std::endl;
+
+	return __fail;
+}
+
