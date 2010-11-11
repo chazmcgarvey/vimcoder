@@ -9,6 +9,8 @@ run: all
 	
 test: all
 	./driver -exit_on_fail
+	
+driver.o: $CLASSNAME$.o
 
 driver: driver.o
 	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS) $(LIBS)
