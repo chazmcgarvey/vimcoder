@@ -1,14 +1,18 @@
 
 #include "$CLASSNAME$.cc"
 
+#include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <sstream>
+#include <string>
 #include <sys/time.h>
+#include <vector>
 
-static bool		__exit_on_fail = false;
-static int		__pass = 0;
-static int		__fail = 0;
-static double	__time = 0.0;
+using namespace std;
+
+
+static double __time = 0.0;
 
 static void __timer_start()
 {
@@ -26,76 +30,130 @@ static double __timer_stop()
 	return __time - start;
 }
 
-template <class T>
-std::string __encode(const T& in)
-{
-	std::ostringstream s;
-	s << in;
-	return s.str();
-}
 
-std::string __encode(const std::string& in)
+std::ostream& operator << (std::ostream& out, const std::string& str)
 {
-	std::ostringstream s;
-	s << '"' << in << '"';
-	return s.str();
+	out << '"' << str.c_str() << '"';
+	return out;
 }
 
 template <class T>
-std::string __join(const std::vector<T>& in, const std::string& glue)
+std::ostream& operator << (std::ostream& out, const std::vector<T>& vec)
 {
-	if (in.size() == 0) return "";
-	std::ostringstream s;
-	s << __encode(in[0]);
-	for (size_t i = 1; i < in.size(); ++i) s << glue << __encode(in[i]);
-	return s.str();
-}
-
-template <class T>
-std::string __encode(const std::vector<T>& in)
-{
-	std::ostringstream s;
-	s << "{ " << __join(in, ",  ") << " }";
-	return s.str();
-}
-
-void __do_test(const std::string& expected, $METHODPARAMS$)
-{
-	static int testNum = 0;
-	std::cout << "----------------------------------------" << std::endl
-			  << "Test " << testNum++ << ": ";
-
-	__timer_start();
-	
-	$CLASSNAME$ object;
-	$RETURNTYPE$ ret = object.$METHODNAME$($METHODPARAMNAMES$);
-	
-	double t = __timer_stop();
-	
-	std::string actual = __encode(ret);
-	if (actual == expected)
+	out << '{';
+	if (0 < vec.size())
 	{
-		std::cout << "[PASS] in " << t << " seconds." << std::endl;
-		++__pass;
+		out << vec[0];
+		for (size_t i = 1; i < vec.size(); ++i) out << ", " << vec[i];
+	}
+	out << '}';
+	return out;
+}
+
+std::istream& operator >> (std::istream& in, std::string& str)
+{
+	while (in.good() && std::isspace(in.peek())) in.get();
+
+	int c;
+	if (in.good() && (c = in.get()) == '"')
+	{
+		std::ostringstream s;
+		while (in.good() && (c = in.get()) != '"')
+		{
+			s.put(char(c));
+		}
+		str = s.str();
 	}
 	else
 	{
-		std::cout << "[FAIL] in " << t << " seconds." << std::endl
-				  << "   Actual: " << actual << std::endl
-				  << " Expected: " << expected << std::endl;
-		++__fail;
-		if (__exit_on_fail) exit(1);
+		in.putback(c);
 	}
+
+	return in;
 }
+
+template <class T>
+std::istream& operator >> (std::istream& in, std::vector<T>& vec)
+{
+	while (in.good() && std::isspace(in.peek())) in.get();
+
+	int c;
+	if (in.good() && (c = in.get()) == '{')
+	{
+		while (in.good() && std::isspace(in.peek())) in.get();
+		T t;
+		vec.clear();
+		while (in.good() && (c = in.get()) != '}')
+		{
+			if (c != ',') in.putback(c);
+			in >> t;
+			vec.push_back(t);
+			while (in.good() && std::isspace(in.peek())) in.get();
+		}
+
+	}
+	else
+	{
+		in.putback(c);
+	}
+
+	return in;
+}
+
 
 int main(int argc, char* argv[])
 {
+	bool	__exit_on_fail = false;
+	int		__pass = 0;
+	int		__fail = 0;
+	
 	if (1 < argc) __exit_on_fail = true;
+	
+	std::ifstream __in("testcases.txt");
+	for(;;)
+	{
+		$RETURNTYPE$	__expected;
+		$METHODPARAMDECLARES$
+		__in >> __expected >> $METHODPARAMSTREAMIN$;
+		if (!__in.good()) break;
+		
+		std::cout << "----------------------------------------" << std::endl
+				  << "Test " << (__pass + __fail) << ": ";
+		std::cout.flush();
+		
+		__timer_start();
+		
+		$CLASSNAME$ object;
+		$RETURNTYPE$ __actual = object.$METHODNAME$($METHODPARAMNAMES$);
+		
+		double __t = __timer_stop();
+		
+		if (__actual == __expected)
+		{
+			std::cout << "[PASS] in " << __t << " seconds." << std::endl;
+			++__pass;
+		}
+		else
+		{
+			std::cout << "[FAIL] in " << __t << " seconds." << std::endl
+					  << "->  Input: " << $METHODPARAMSTREAMOUT$ << std::endl
+					  << "   Actual: " << __actual << std::endl
+					  << " Expected: " << __expected << std::endl;
+			++__fail;
+			if (__exit_on_fail) exit(1);
+		}
+	}
 
-$TESTCASES$
 	std::cout << "========================================" << std::endl
 			  << " Total Pass: " << __pass << std::endl
 			  << " Total Fail: " << __fail << std::endl;
+
+	if (__fail == 0)
+	{
+		std::cout << std::endl << "Nice!  "
+				  << "Don't forget to compile remotely before submitting."
+				  << std::endl;
+	}
 
 	return __fail;
 }

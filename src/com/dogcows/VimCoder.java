@@ -48,6 +48,7 @@ public class VimCoder
     
     public void startUsing()
     {
+        System.out.println("startUsing");
         Runnable task = new Runnable()
         {
             public void run()
@@ -67,39 +68,43 @@ public class VimCoder
     
     public void stopUsing()
     {
+        System.out.println("stopUsing");
         editor = null;
     }
     
     public JPanel getEditorPanel()
     {
+        System.out.println("getEditorPanel");
         return panel;
     }
    
-    public String getSource() throws IOException
+    public String getSource() throws Exception
     {
+        System.out.println("getSource");
         try
         {
             String source = editor.getSource();
             logInfo("Source code uploaded to server.");
             return source;
         }
-        catch (IOException exception)
+        catch (Exception exception)
         {
-            logError("Failed to open source file for reading.");
+            logError("Failed to get source code: " + exception.getLocalizedMessage());
             throw exception;
         }
     }
    
     public void setSource(String source)
     {
+        System.out.println("setSource: " + source);
         try
         {
             editor.setSource(source);
             logInfo("Source code downloaded from server.");
         }
-        catch (IOException exception)
+        catch (Exception exception)
         {
-            logError("Failed to save the source given by the server.");
+            logError("Failed to save the source given by the server: " + exception.getLocalizedMessage());
             return;
         }
     }
@@ -108,13 +113,14 @@ public class VimCoder
                                     Language language,
                                     Renderer renderer)
     {
+        System.out.println("setProblemComponent");
         try
         {
             editor = new Editor(component, language, renderer);
         }
-        catch (IOException exception)
+        catch (Exception exception)
         {
-            logError("An error occured while loading the problem.");
+            logError("An error occured while loading the problem: " + exception.getLocalizedMessage());
         }
     }
 
@@ -141,17 +147,17 @@ public class VimCoder
     
     private void logInfo(String what)
     {
-        log(" INFO: " + what + "\n");
+        log(" INFO: " + what + System.getProperty("line.separator"));
     }
     
     private void logWarning(String what)
     {
-        log(" WARN: " + what + "\n");
+        log(" WARN: " + what + System.getProperty("line.separator"));
     }
     
     private void logError(String what)
     {
-        log("ERROR: " + what + "\n");
+        log("ERROR: " + what + System.getProperty("line.separator"));
     }
     
     

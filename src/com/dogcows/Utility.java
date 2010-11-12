@@ -9,7 +9,7 @@ import java.util.Map;
  * @author Charles McGarvey
  *
  */
-public abstract class Utilities
+public abstract class Utility
 {
 
     public static <T> T[] concat(T[] a, T[] b)
@@ -61,7 +61,7 @@ public abstract class Utilities
     {
         StringBuilder text = new StringBuilder();
         
-        InputStream stream = Utilities.class.getResourceAsStream("resources/" + path);
+        InputStream stream = Utility.class.getResourceAsStream("resources/" + path);
         if (stream != null)
         {
             try
@@ -88,8 +88,9 @@ public abstract class Utilities
         for (String key : terms.keySet())
         {
             text = text.replaceAll("\\$" + key + "\\$",
-                                   Utilities.quote(terms.get(key)));
+                                   Utility.quote(terms.get(key)));
         }
         return text;
     }
 }
+
