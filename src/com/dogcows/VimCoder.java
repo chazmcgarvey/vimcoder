@@ -21,17 +21,36 @@ import com.topcoder.shared.problem.Renderer;
 public class VimCoder
 {
     /**
-     * 
+     * The name and version of this plugin.
      */
     public final static String     version = "VimCoder 0.1";
+    
+    /**
+     * The website of the plugin project.
+     */
     public final static String     website = "http://www.dogcows.com/vimcoder";
     
+    
+    /**
+     * The panel given to the Arena applet when it is requested.
+     */
     private JPanel      panel;
+    
+    /**
+     * The text widget where log messages are appended.
+     */
     private JTextArea   logArea;
     
+    /**
+     * The current editor object (or null if there is none).
+     */
     private Editor      editor;
 
    
+    /**
+     * Instantiate the entry point of the editor plugin.  Sets up the log widget
+     * and panel.
+     */
     public VimCoder()
     {
         logArea = new JTextArea();
@@ -46,6 +65,9 @@ public class VimCoder
     }
 
     
+    /**
+     * Called by the Arena when the plugin is about to be used.
+     */
     public void startUsing()
     {
         System.out.println("startUsing");
@@ -66,18 +88,32 @@ public class VimCoder
         }
     }
     
+    /**
+     * Called by the Arena when the plugin is no longer needed.
+     */
     public void stopUsing()
     {
         System.out.println("stopUsing");
         editor = null;
     }
     
+    /**
+     * Called by the Arena to obtain the editor panel which we will use to show
+     * log messages.
+     * @return The editor panel.
+     */
     public JPanel getEditorPanel()
     {
         System.out.println("getEditorPanel");
         return panel;
     }
    
+    /**
+     * Called by the Arena to obtain the current source.  This happens when the
+     * user is saving, compiling, and/or submitting.
+     * @return The current source code.
+     * @throws Exception If the source file edited by Vim couldn't be read.
+     */
     public String getSource() throws Exception
     {
         System.out.println("getSource");
@@ -89,11 +125,16 @@ public class VimCoder
         }
         catch (Exception exception)
         {
-            logError("Failed to get source code: " + exception.getLocalizedMessage());
+            logError("Failed to get source code: " +
+                     exception.getLocalizedMessage());
             throw exception;
         }
     }
-   
+    
+    /**
+     * Called by the Arena to pass the source it has.
+     * @param source The source code.
+     */
     public void setSource(String source)
     {
         System.out.println("setSource: " + source);
@@ -104,11 +145,18 @@ public class VimCoder
         }
         catch (Exception exception)
         {
-            logError("Failed to save the source given by the server: " + exception.getLocalizedMessage());
+            logError("Failed to save the source given by the server: " +
+                     exception.getLocalizedMessage());
             return;
         }
     }
     
+    /**
+     * Called by the Arena to pass along information about the current problem.
+     * @param component A container for the particulars of the problem.
+     * @param language The currently selected language.
+     * @param renderer A helper object to help format the problem statement.
+     */
     public void setProblemComponent(ProblemComponentModel component, 
                                     Language language,
                                     Renderer renderer)
@@ -120,11 +168,17 @@ public class VimCoder
         }
         catch (Exception exception)
         {
-            logError("An error occured while loading the problem: " + exception.getLocalizedMessage());
+            logError("An error occured while loading the problem: " +
+                     exception.getLocalizedMessage());
         }
     }
 
     
+    /**
+     * A generic logging function, appends text to the text area.  A timestamp
+     * is also prepended to the next text.
+     * @param what The text to append.
+     */
     private void log(final String what)
     {
         Runnable task = new Runnable()
@@ -145,33 +199,31 @@ public class VimCoder
         }
     }
     
+    /**
+     * Output non-critical messages to the log.
+     * @param what The text of the message.
+     */
     private void logInfo(String what)
     {
         log(" INFO: " + what + System.getProperty("line.separator"));
     }
     
+    /**
+     * Output potentially important messages to the log.
+     * @param what The text of the message.
+     */
     private void logWarning(String what)
     {
         log(" WARN: " + what + System.getProperty("line.separator"));
     }
     
+    /**
+     * Output critical messages and errors to the log.
+     * @param what The text of the message.
+     */
     private void logError(String what)
     {
         log("ERROR: " + what + System.getProperty("line.separator"));
-    }
-    
-    
-    public static void main(String args[])
-    {
-        VimCoder plugin = new VimCoder();
-        
-        JFrame frame = new JFrame("VimCoder");
-        frame.add(plugin.getEditorPanel());
-        frame.setSize(640, 480);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        plugin.startUsing();
     }
 }
 
