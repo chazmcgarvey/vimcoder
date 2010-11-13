@@ -3,6 +3,9 @@ package com.dogcows;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -10,6 +13,8 @@ import com.topcoder.client.contestant.ProblemComponentModel;
 import com.topcoder.shared.language.*;
 import com.topcoder.shared.problem.*;
 import com.topcoder.shared.problem.Renderer;
+import com.topcoder.client.contestApplet.common.Common;
+import com.topcoder.client.contestApplet.common.LocalPreferences;
 
 /**
  * @author Charles McGarvey
@@ -32,6 +37,17 @@ public class VimCoder
     
     
     /**
+     * The first part of the command used to invoke the Vim server.
+     */
+    private static String   vimCommand = "gvim";
+    
+    /**
+     * The path to the main VimCoder directory.
+     */
+    private static File     rootDir = new File("~/.vimcoder");
+    
+    
+    /**
      * The panel given to the Arena applet when it is requested.
      */
     private JPanel      panel;
@@ -45,6 +61,46 @@ public class VimCoder
      * The current editor object (or null if there is none).
      */
     private Editor      editor;
+    
+    /**
+     * The configuration panel.
+     */
+    private JDialog     configDialog;
+    
+    
+    /**
+     * The key for the vim command preference.
+     */
+    private final static String VIMCOMMAND = "com.dogcows.VimCoder.config.vimcommand";
+    
+    /**
+     * The key for the root directory preference.
+     */
+    private final static String ROOTDIR = "com.dogcows.VimCoder.config.rootdir";
+    
+    /**
+     * The preferences object for storing plugin settings.
+     */
+    private static LocalPreferences prefs = LocalPreferences.getInstance();
+    
+    
+    /**
+     * Get the command for invoking vim.
+     * @return The command.
+     */
+    public static String getVimCommand()
+    {
+        return vimCommand;
+    }
+    
+    /**
+     * Get the storage directory.
+     * @return The directory.
+     */
+    public static File getStorageDirectory()
+    {
+        return rootDir;
+    }
 
    
     /**
@@ -70,7 +126,6 @@ public class VimCoder
      */
     public void startUsing()
     {
-        System.out.println("startUsing");
         Runnable task = new Runnable()
         {
             public void run()
@@ -86,6 +141,7 @@ public class VimCoder
         {
             SwingUtilities.invokeLater(task);
         }
+        loadConfiguration();
     }
     
     /**
@@ -93,7 +149,6 @@ public class VimCoder
      */
     public void stopUsing()
     {
-        System.out.println("stopUsing");
         editor = null;
     }
     
@@ -104,7 +159,6 @@ public class VimCoder
      */
     public JPanel getEditorPanel()
     {
-        System.out.println("getEditorPanel");
         return panel;
     }
    
@@ -116,7 +170,6 @@ public class VimCoder
      */
     public String getSource() throws Exception
     {
-        System.out.println("getSource");
         try
         {
             String source = editor.getSource();
@@ -137,7 +190,6 @@ public class VimCoder
      */
     public void setSource(String source)
     {
-        System.out.println("setSource: " + source);
         try
         {
             editor.setSource(source);
@@ -161,7 +213,6 @@ public class VimCoder
                                     Language language,
                                     Renderer renderer)
     {
-        System.out.println("setProblemComponent");
         try
         {
             editor = new Editor(component, language, renderer);
@@ -171,6 +222,127 @@ public class VimCoder
             logError("An error occured while loading the problem: " +
                      exception.getLocalizedMessage());
         }
+    }
+    
+    /**
+     * Called by the Arena when it's time to show our configuration panel.
+     */
+    public void configure()
+    {
+        loadConfiguration();
+        
+        configDialog = new JDialog();
+        Container pane = configDialog.getContentPane();
+        
+        pane.setPreferredSize(new Dimension(550, 135));
+        pane.setLayout(new GridBagLayout());
+        pane.setForeground(Common.FG_COLOR);
+        pane.setBackground(Common.WPB_COLOR);
+        GridBagConstraints c = new GridBagConstraints();
+        
+        JLabel vimCommandLabel = new JLabel("Vim Command:");
+        vimCommandLabel.setForeground(Common.FG_COLOR);
+        vimCommandLabel.setAlignmentX(1.0f);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.insets = new Insets(5, 5, 5, 5);
+        pane.add(vimCommandLabel, c);
+        
+        final JTextField vimCommandField = new JTextField(vimCommand, 25);
+        c.gridx = 1;
+        c.gridy = 0;
+        c.gridwidth = 3;
+        pane.add(vimCommandField, c);
+        
+        JLabel rootDirLabel = new JLabel("Storage Directory:");
+        rootDirLabel.setForeground(Common.FG_COLOR);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        pane.add(rootDirLabel, c);
+        
+        final JTextField rootDirField = new JTextField(rootDir.getPath(), 25);
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 2;
+        pane.add(rootDirField, c);
+        
+        JButton browseButton = new JButton("Browse");
+        c.fill = GridBagConstraints.NONE;
+        c.gridx = 3;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.anchor = GridBagConstraints.BASELINE_LEADING;
+        pane.add(browseButton, c);
+        
+        JButton closeButton = new JButton("Close");
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 2;
+        c.anchor = GridBagConstraints.PAGE_END;
+        pane.add(closeButton, c);
+        
+        JButton saveButton = new JButton("Save");
+        c.gridx = 2;
+        c.gridy = 2;
+        c.gridwidth = 2;
+        pane.add(saveButton, c);
+        
+        browseButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setCurrentDirectory(new File("."));
+                chooser.setDialogTitle("Choose Storage Directory");
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                chooser.setAcceptAllFileFilterUsed(false);
+                
+                if (chooser.showOpenDialog(configDialog) == JFileChooser.APPROVE_OPTION)
+                {
+                    rootDirField.setText(chooser.getSelectedFile().getPath());
+                }
+            }
+        });
+        
+        closeButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                configDialog.dispose();
+            }
+        });
+        
+        saveButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                prefs.setProperty(VIMCOMMAND, vimCommandField.getText());
+                prefs.setProperty(ROOTDIR, rootDirField.getText());
+                configDialog.dispose();
+            }
+        });
+         
+        configDialog.setTitle("VimCoder Preferences");
+        configDialog.pack();
+        configDialog.setLocationByPlatform(true);
+        configDialog.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
+        configDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        configDialog.setVisible(true);
+    }
+    
+    
+    /**
+     * Load the local preferences related to this plugin.
+     */
+    private void loadConfiguration()
+    {
+        String vc  = prefs.getProperty(VIMCOMMAND);
+        if (vc != null) vimCommand = vc;
+        
+        String dir = prefs.getProperty(ROOTDIR);
+        if (dir != null) rootDir = new File(dir);
     }
 
     

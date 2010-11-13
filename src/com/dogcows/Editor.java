@@ -74,7 +74,7 @@ public class Editor
         this.name = component.getClassName();
         
         // Make sure the top-level vimcoder directory exists.
-        File topDir = new File(System.getProperty("user.home"), ".vimcoder");
+        File topDir = VimCoder.getStorageDirectory();
         if (!topDir.isDirectory())
         {
             if (!topDir.mkdirs()) throw new IOException(topDir.getPath());
@@ -224,12 +224,14 @@ public class Editor
      * @param argument Arguments for the remote command.
      * @throws Exception If the command could not be sent.
      */
-    private void sendVimCommand(String command, 
+    private void sendVimCommand(String command,
                                 String[] arguments) throws Exception
     {
-        String[] exec = {"gvim", "--servername", "VimCoder" + id, command};
-        exec = Util.concat(exec, arguments);
-        Process child = Runtime.getRuntime().exec(exec, null, directory);
+        String[] vimCommand = VimCoder.getVimCommand().split("\\s");
+        String[] flags = {"--servername", "VimCoder" + id, command};
+        vimCommand = Util.concat(vimCommand, flags);
+        vimCommand = Util.concat(vimCommand, arguments);
+        Process child = Runtime.getRuntime().exec(vimCommand, null, directory);
         
         /* FIXME: This is a hack with a magic number.  The problem is the Vim
          * process doesn't fork to the background on some systems, so we can't
