@@ -28,7 +28,7 @@ public class VimCoder
     /**
      * The name and version of this plugin.
      */
-    public final static String     version = "VimCoder 0.1";
+    public final static String     version = "VimCoder 0.2";
     
     /**
      * The website of the plugin project.
@@ -44,7 +44,16 @@ public class VimCoder
     /**
      * The path to the main VimCoder directory.
      */
-    private static File     rootDir = new File("~/.vimcoder");
+    private static File     rootDir;
+    static
+    {
+        if (System.getProperty("os.name").toLowerCase().equals("win"))
+        {
+            vimCommand = "C:\\WINDOWS\\gvim.bat";
+        }
+        rootDir = new File(System.getProperty("user.home") +
+                           System.getProperty("file.separator") + ".vimcoder");
+    }
     
     
     /**
