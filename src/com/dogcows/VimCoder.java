@@ -249,54 +249,54 @@ public class VimCoder
         pane.setBackground(Common.WPB_COLOR);
         GridBagConstraints c = new GridBagConstraints();
         
-        JLabel vimCommandLabel = new JLabel("Vim Command:");
-        vimCommandLabel.setForeground(Common.FG_COLOR);
-        vimCommandLabel.setAlignmentX(1.0f);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.insets = new Insets(5, 5, 5, 5);
-        pane.add(vimCommandLabel, c);
-        
-        final JTextField vimCommandField = new JTextField(vimCommand, 25);
-        c.gridx = 1;
-        c.gridy = 0;
-        c.gridwidth = 3;
-        pane.add(vimCommandField, c);
-        
-        JLabel rootDirLabel = new JLabel("Storage Directory:");
+        JLabel rootDirLabel = new JLabel("Storage Directory:", SwingConstants.RIGHT);
         rootDirLabel.setForeground(Common.FG_COLOR);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 0;
         c.gridwidth = 1;
         pane.add(rootDirLabel, c);
         
         final JTextField rootDirField = new JTextField(rootDir.getPath(), 25);
         c.gridx = 1;
-        c.gridy = 1;
-        c.gridwidth = 2;
+        c.gridy = 0;
         pane.add(rootDirField, c);
         
         JButton browseButton = new JButton("Browse");
-        c.fill = GridBagConstraints.NONE;
-        c.gridx = 3;
-        c.gridy = 1;
-        c.gridwidth = 1;
+        c.gridx = 2;
+        c.gridy = 0;
         c.anchor = GridBagConstraints.BASELINE_LEADING;
         pane.add(browseButton, c);
         
-        JButton closeButton = new JButton("Close");
+        JLabel vimCommandLabel = new JLabel("Vim Command:", SwingConstants.RIGHT);
+        vimCommandLabel.setForeground(Common.FG_COLOR);
         c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 1;
+        pane.add(vimCommandLabel, c);
+        
+        final JTextField vimCommandField = new JTextField(vimCommand, 25);
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 2;
+        pane.add(vimCommandField, c);
+        
+        JButton closeButton = new JButton("Cancel");
+        c.fill = GridBagConstraints.NONE;
         c.gridx = 1;
         c.gridy = 2;
-        c.anchor = GridBagConstraints.PAGE_END;
+        c.gridwidth = 1;
+        c.anchor = GridBagConstraints.EAST;
         pane.add(closeButton, c);
         
         JButton saveButton = new JButton("Save");
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 2;
         c.gridy = 2;
-        c.gridwidth = 2;
+        c.anchor = GridBagConstraints.EAST;
         pane.add(saveButton, c);
+        configDialog.getRootPane().setDefaultButton(saveButton);
         
         browseButton.addActionListener(new ActionListener()
         {
@@ -388,16 +388,7 @@ public class VimCoder
     {
         log(" INFO: " + what + System.getProperty("line.separator"));
     }
-    
-    /**
-     * Output potentially important messages to the log.
-     * @param what The text of the message.
-     */
-    private void logWarning(String what)
-    {
-        log(" WARN: " + what + System.getProperty("line.separator"));
-    }
-    
+
     /**
      * Output critical messages and errors to the log.
      * @param what The text of the message.

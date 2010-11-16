@@ -241,8 +241,7 @@ public class Editor
          * get the return code from the child if we can.  The workaround here is
          * to stall the thread for a little while or until we know the child
          * does exit.  If the child never exits before the timeout, we will
-         * assume it is not backgrounding and that everything worked.  This all
-         * works very well in practice, but perhaps there's a better way... */
+         * assume it is not backgrounding and that everything worked. */
         long expire = System.currentTimeMillis() + 250;
         while (System.currentTimeMillis() < expire)
         {
