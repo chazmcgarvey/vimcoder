@@ -125,7 +125,7 @@ public class Editor
         sourceFile = new File(directory, name + "." + ext);
         if (!sourceFile.canRead())
         {
-            String text = Util.expandTemplate(Util.readResource(lang + "Template"),
+            String text = Util.expandTemplate(readTemplate(lang + "Template"),
                                               terms);
             FileWriter writer = new FileWriter(sourceFile);
             writer.write(text);
@@ -136,8 +136,8 @@ public class Editor
         File driverFile = new File(directory, "driver." + ext);
         if (!driverFile.canRead())
         {
-            String text = Util.expandTemplate(Util.readResource(lang + "Driver"),
-                                                 terms);
+            String text = Util.expandTemplate(readTemplate(lang + "Driver"),
+                                              terms);
             FileWriter writer = new FileWriter(driverFile);
             writer.write(text);
             writer.close();
@@ -168,8 +168,8 @@ public class Editor
         // Finally, expand the Makefile template and write it.
         File makeFile = new File(directory, "Makefile");
         {
-            String text = Util.expandTemplate(Util.readResource(lang + "Makefile"),
-                                         terms);
+            String text = Util.expandTemplate(readTemplate(lang + "Makefile"),
+                                              terms);
             FileWriter writer = new FileWriter(makeFile);
             writer.write(text);
             writer.close();
@@ -258,6 +258,28 @@ public class Editor
             }
         }
     }
+    
+    
+    /**
+     * Read a template.  We first look in the storage directory.  If we can't
+     * find one, we look among the resources.
+     * @param tName The name of the template.
+     * @return The contents of the template file, or an empty string.
+     */
+    private String readTemplate(String tName)
+    {
+        File templateFile = new File(VimCoder.getStorageDirectory(), tName);
+        try
+        {
+            if (templateFile.canRead()) return Util.readFile(templateFile);
+            return Util.readResource(tName);
+        }
+        catch (IOException exception)
+        {
+            return "";
+        }
+    }
+    
     
     /**
      * Convert an array of data types to an array of strings according to a
