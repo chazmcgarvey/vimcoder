@@ -28,7 +28,7 @@ public class VimCoder
     /**
      * The name and version of this plugin.
      */
-    public final static String     version = "VimCoder 0.2";
+    public final static String     version = "VimCoder 0.3";
     
     /**
      * The website of the plugin project.
