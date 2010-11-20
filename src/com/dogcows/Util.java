@@ -98,7 +98,7 @@ public abstract class Util
 			reader.close();
 		}
 
-		return text.toString();
+		return text.toString().replaceAll("\n", System.getProperty("line.separator"));
 	}
 
 	/**
@@ -132,7 +132,7 @@ public abstract class Util
 			}
 		}
 
-		return text.toString();
+		return text.toString().replaceAll("\n", System.getProperty("line.separator"));
 	}
 
 	/**
