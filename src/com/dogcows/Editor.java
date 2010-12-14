@@ -97,7 +97,7 @@ public class Editor
 												  language));
 		terms.put("METHODPARAMNAMES",     Util.join(component.getParamNames(), ", "));
 		terms.put("METHODPARAMSTREAMIN",  Util.join(component.getParamNames(), " >> "));
-		terms.put("METHODPARAMSTREAMOUT", Util.join(component.getParamNames(), " << "));
+		terms.put("METHODPARAMSTREAMOUT", Util.join(component.getParamNames(), " << \", \" << "));
 		terms.put("METHODPARAMDECLARES",  getMethodParamDeclarations(component.getParamTypes(),
 																	 component.getParamNames(),
 																	 language));
