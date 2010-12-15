@@ -1,6 +1,6 @@
 
 project		:= VimCoder
-version		:= 0.3
+version		:= 0.3.1
 
 mainclass	= bin/com/dogcows/VimCoder.class
 library		= lib/ContestApplet.jar
