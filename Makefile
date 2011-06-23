@@ -1,21 +1,22 @@
 
-project		:= VimCoder
-version		:= 0.3.1
+# Use this file with ``make'' to compile and package VimCoder.
+# Supported targets: all clean distclean dist fetch jar
 
-mainclass	= bin/com/dogcows/VimCoder.class
+project		= VimCoder
+version		= 0.3.1
+
+mainclass	= src/com/dogcows/VimCoder.java
 library		= lib/ContestApplet.jar
 jarfile		= $(project)-$(version).jar
 
-JAVAC		:= javac
-JAVACFLAGS	:= -d bin -sourcepath src -classpath bin:$(library)
+JAVAC		= javac
+JAVACFLAGS	= -d . -sourcepath src -classpath $(library)
 
 
-.PHONY: all clean distclean dist fetch jar
-
-all: $(library) $(mainclass)
+all: $(classobj)
 
 clean:
-	rm -rf bin build
+	rm -rf META-INF com
 
 distclean: clean
 	rm -rf lib
@@ -25,20 +26,35 @@ dist:
 
 fetch: $(library)
 
-jar: all $(jarfile)
+jar: $(jarfile)
+
+
+classobj	= $(mainclass:src/%.java=%.class)
 
 
 $(library):
-	sh make.sh fetch $@
+	@echo "Fetching dependencies..."
+	mkdir -p lib
+	curl -o $@ http://www.topcoder.com/contest/classes/ContestApplet.jar
 
-bin/com/dogcows/%.class: src/com/dogcows/%.java
-	mkdir -p bin/com/dogcows/resources &&\
-$(JAVAC) $(JAVACFLAGS) $< &&\
-cp -R src/com/dogcows/resources bin/com/dogcows/
+$(jarfile): $(classobj) META-INF/MANIFEST.MF
+	@echo "Packaging jar file..."
+	mkdir -p com/dogcows/resources
+	cp src/com/dogcows/resources/* com/dogcows/resources
+	rm -f $@
+	zip $@ META-INF/MANIFEST.MF COPYING README $$(find com -type f | sort)
+	@echo "Done."
 
-$(jarfile): $(mainclass)
-	sh make.sh jar $@
+$(classobj): $(mainclass)
+	$(JAVAC) $(JAVACFLAGS) $<
+
+META-INF/MANIFEST.MF:
+	mkdir -p META-INF
+	printf "Manifest-Version: 1.0\n\n" >$@
 
 
 $(mainclass): src/com/dogcows/Util.java src/com/dogcows/Editor.java
+$(classobj): $(library)
+
+.PHONY: all clean distclean dist fetch jar
 
