@@ -243,7 +243,7 @@ public class Editor
 		 * before the timeout, we will assume it is not backgrounding and
 		 * that everything worked.  This works as long as the Vim server is
 		 * able to start within the stall period. */
-		long expire = System.currentTimeMillis() + 250;
+		long expire = System.currentTimeMillis() + 1000;
 		while (System.currentTimeMillis() < expire)
 		{
 			Thread.yield();
