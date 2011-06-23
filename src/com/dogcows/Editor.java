@@ -164,6 +164,7 @@ public class Editor
 
 		// Finally, expand the Makefile template and write it.
 		File makeFile = new File(directory, "Makefile");
+		if (!makeFile.canRead())
 		{
 			String text = Util.expandTemplate(readTemplate(lang + "Makefile"),
 											  terms);
