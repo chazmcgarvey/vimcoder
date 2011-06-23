@@ -89,7 +89,7 @@ public class Editor
 
 		// Set up the terms used for the template expansion.
 		HashMap<String,String> terms = new HashMap<String,String>();
-		terms.put("RETURNTYPE",   component.getReturnType().getDescriptor(language).replaceAll("\\s+", ""));
+		terms.put("RETURNTYPE",   component.getReturnType().getDescriptor(language));
 		terms.put("CLASSNAME",	  name);
 		terms.put("METHODNAME",   component.getMethodName());
 		terms.put("METHODPARAMS", getMethodParams(component.getParamTypes(),
@@ -295,7 +295,7 @@ public class Editor
 		String[] strings = new String[types.length];
 		for (int i = 0; i < types.length; ++i)
 		{
-			strings[i] = types[i].getDescriptor(language).replaceAll("\\s+", "");
+			strings[i] = types[i].getDescriptor(language);
 		}
 		return strings;
 	}
