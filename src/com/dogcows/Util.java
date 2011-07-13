@@ -61,12 +61,12 @@ public abstract class Util
 	}
 
 	/**
-	 * Quote a string by replacing prepending backslashes and double
+	 * Escape a string by replacing prepending backslashes and double
 	 * quotation characters with an extra backslash.
-	 * @param The string to be quoted.
-	 * @return The quoted string.
+	 * @param The string to be escaped.
+	 * @return The escaped string.
 	 */
-	public static String quote(String a)
+	public static String escape(String a)
 	{
 		a = a.replaceAll("\\\\", "\\\\\\\\");
 		a = a.replaceAll("\"",	 "\\\\\\\"");
@@ -151,8 +151,7 @@ public abstract class Util
 		String text = template;
 		for (String key : terms.keySet())
 		{
-			text = text.replaceAll("\\$" + key + "\\$",
-								   Util.quote(terms.get(key)));
+			text = text.replaceAll("\\$" + key + "\\$", Util.escape(terms.get(key)));
 		}
 		return text;
 	}
