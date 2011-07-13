@@ -24,22 +24,22 @@ public class Editor
 	/**
 	 * The problem ID number.
 	 */
-	private String	id;
+	private String id;
 
 	/**
 	 * The name of the class.
 	 */
-	private String	name;
+	private String name;
 
 	/**
 	 * The path of the current source file.
 	 */
-	private File	sourceFile;
+	private File sourceFile;
 
 	/**
 	 * The path of the problem directory.
 	 */
-	private File	directory;
+	private File directory;
 
 
 	/**
@@ -48,10 +48,10 @@ public class Editor
 	private static final Map<String,String> languageExtension = new HashMap<String,String>();
 	static
 	{
-		languageExtension.put("Java",	"java");
-		languageExtension.put("C++",	"cc");
-		languageExtension.put("C#",		"cs");
-		languageExtension.put("VB",		"vb");
+		languageExtension.put("Java", "java");
+		languageExtension.put("C++", "cc");
+		languageExtension.put("C#", "cs");
+		languageExtension.put("VB", "vb");
 		languageExtension.put("Python", "py");
 	}
 
@@ -64,8 +64,7 @@ public class Editor
 	 * @throws Exception If the editor could not set itself up.
 	 */
 	public Editor(ProblemComponentModel component,
-				  Language language,
-				  Renderer renderer) throws Exception
+		      Language language, Renderer renderer) throws Exception
 	{
 		this.id = String.valueOf(component.getProblem().getProblemID());
 		this.name = component.getClassName();
@@ -85,22 +84,20 @@ public class Editor
 		}
 
 		String lang = language.getName();
-		String ext	= languageExtension.get(lang);
+		String ext = languageExtension.get(lang);
 
 		// Set up the terms used for the template expansion.
 		HashMap<String,String> terms = new HashMap<String,String>();
-		terms.put("RETURNTYPE",   component.getReturnType().getDescriptor(language));
-		terms.put("CLASSNAME",	  name);
-		terms.put("METHODNAME",   component.getMethodName());
+		terms.put("RETURNTYPE", component.getReturnType().getDescriptor(language));
+		terms.put("CLASSNAME", name);
+		terms.put("METHODNAME", component.getMethodName());
 		terms.put("METHODPARAMS", getMethodParams(component.getParamTypes(),
-												  component.getParamNames(),
-												  language));
-		terms.put("METHODPARAMNAMES",     Util.join(component.getParamNames(), ", "));
-		terms.put("METHODPARAMSTREAMIN",  Util.join(component.getParamNames(), " >> "));
+							  component.getParamNames(), language));
+		terms.put("METHODPARAMNAMES", Util.join(component.getParamNames(), ", "));
+		terms.put("METHODPARAMSTREAMIN", Util.join(component.getParamNames(), " >> "));
 		terms.put("METHODPARAMSTREAMOUT", Util.join(component.getParamNames(), " << \", \" << "));
-		terms.put("METHODPARAMDECLARES",  getMethodParamDeclarations(component.getParamTypes(),
-																	 component.getParamNames(),
-																	 language));
+		terms.put("METHODPARAMDECLARES", getMethodParamDeclarations(component.getParamTypes(),
+									    component.getParamNames(), language));
 
 		// Write the problem statement as an HTML file in the problem directory.
 		File problemFile = new File(directory, "Problem.html");
@@ -122,8 +119,7 @@ public class Editor
 		sourceFile = new File(directory, name + "." + ext);
 		if (!sourceFile.canRead())
 		{
-			String text = Util.expandTemplate(readTemplate(lang + "Template"),
-											  terms);
+			String text = Util.expandTemplate(readTemplate(lang + "Template"), terms);
 			FileWriter writer = new FileWriter(sourceFile);
 			writer.write(text);
 			writer.close();
@@ -133,8 +129,7 @@ public class Editor
 		File driverFile = new File(directory, "driver." + ext);
 		if (!driverFile.canRead())
 		{
-			String text = Util.expandTemplate(readTemplate(lang + "Driver"),
-											  terms);
+			String text = Util.expandTemplate(readTemplate(lang + "Driver"), terms);
 			FileWriter writer = new FileWriter(driverFile);
 			writer.write(text);
 			writer.close();
@@ -166,8 +161,7 @@ public class Editor
 		File makeFile = new File(directory, "Makefile");
 		if (!makeFile.canRead())
 		{
-			String text = Util.expandTemplate(readTemplate(lang + "Makefile"),
-											  terms);
+			String text = Util.expandTemplate(readTemplate(lang + "Makefile"), terms);
 			FileWriter writer = new FileWriter(makeFile);
 			writer.write(text);
 			writer.close();
@@ -209,8 +203,7 @@ public class Editor
 	 * @param argument A single argument for the remote command.
 	 * @throws Exception If the command could not be sent.
 	 */
-	private void sendVimCommand(String command,
-								String argument) throws Exception
+	private void sendVimCommand(String command, String argument) throws Exception
 	{
 		String[] arguments = {argument};
 		sendVimCommand(command, arguments);
@@ -224,8 +217,7 @@ public class Editor
 	 * @param argument Arguments for the remote command.
 	 * @throws Exception If the command could not be sent.
 	 */
-	private void sendVimCommand(String command,
-								String[] arguments) throws Exception
+	private void sendVimCommand(String command, String[] arguments) throws Exception
 	{
 		String[] vimCommand = VimCoder.getVimCommand().split("\\s");
 		String[] flags = {"--servername", "VimCoder" + id, command};
@@ -311,9 +303,7 @@ public class Editor
 	 * @param language The language used for representing the data types.
 	 * @return The list of parameters.
 	 */
-	private String getMethodParams(DataType[] types,
-								   String[] names,
-								   Language language)
+	private String getMethodParams(DataType[] types, String[] names, Language language)
 	{
 		String[] typeStrings = getStringTypes(types, language);
 		return Util.join(Util.combine(typeStrings, names, " "), ", ");
@@ -329,9 +319,7 @@ public class Editor
 	 * @param language The language used for representing the data types.
 	 * @return The parameters as a block of declarations.
 	 */
-	private String getMethodParamDeclarations(DataType[] types,
-											  String[] names,
-											  Language language)
+	private String getMethodParamDeclarations(DataType[] types, String[] names, Language language)
 	{
 		final String end = ";" + System.getProperty("line.separator");
 		String[] typeStrings = getStringTypes(types, language);

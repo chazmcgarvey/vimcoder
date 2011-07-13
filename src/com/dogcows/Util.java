@@ -120,7 +120,7 @@ public abstract class Util
 			try
 			{
 				byte[]	buffer = new byte[4096];
-				int		numBytes = 0;
+				int	numBytes = 0;
 				while (0 < (numBytes = stream.read(buffer)))
 				{
 					text.append(new String(buffer, 0, numBytes));

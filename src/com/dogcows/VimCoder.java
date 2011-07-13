@@ -27,23 +27,23 @@ public class VimCoder
 	/**
 	 * The name and version of this plugin.
 	 */
-	public final static String	version = "VimCoder 0.3.1";
+	public final static String version = "VimCoder 0.3.1";
 
 	/**
 	 * The website of the plugin project.
 	 */
-	public final static String	website = "http://www.dogcows.com/vimcoder";
+	public final static String website = "http://www.dogcows.com/vimcoder";
 
 
 	/**
 	 * The first part of the command used to invoke the Vim server.
 	 */
-	private static String		vimCommand = "gvim";
+	private static String vimCommand = "gvim";
 
 	/**
 	 * The path to the main VimCoder directory.
 	 */
-	private static File			rootDir;
+	private static File rootDir;
 	static
 	{
 		if (System.getProperty("os.name").toLowerCase().equals("win"))
@@ -51,29 +51,29 @@ public class VimCoder
 			vimCommand = "C:\\WINDOWS\\gvim.bat";
 		}
 		rootDir = new File(System.getProperty("user.home") +
-						   System.getProperty("file.separator") + ".vimcoder");
+				   System.getProperty("file.separator") + ".vimcoder");
 	}
 
 
 	/**
 	 * The panel given to the Arena applet when it is requested.
 	 */
-	private JPanel		panel;
+	private JPanel panel;
 
 	/**
 	 * The text widget where log messages are appended.
 	 */
-	private JTextArea	logArea;
+	private JTextArea logArea;
 
 	/**
 	 * The current editor object (or null if there is none).
 	 */
-	private Editor		editor;
+	private Editor editor;
 
 	/**
 	 * The configuration panel.
 	 */
-	private JDialog		configDialog;
+	private JDialog configDialog;
 
 
 	/**
@@ -186,8 +186,7 @@ public class VimCoder
 		}
 		catch (Exception exception)
 		{
-			logError("Failed to get source code: " +
-					 exception.getLocalizedMessage());
+			logError("Failed to get source code: " + exception.getLocalizedMessage());
 			throw exception;
 		}
 	}
@@ -206,7 +205,7 @@ public class VimCoder
 		catch (Exception exception)
 		{
 			logError("Failed to save the source given by the server: " +
-					 exception.getLocalizedMessage());
+				 exception.getLocalizedMessage());
 			return;
 		}
 	}
@@ -220,8 +219,7 @@ public class VimCoder
 	 * statement.
 	 */
 	public void setProblemComponent(ProblemComponentModel component,
-									Language language,
-									Renderer renderer)
+					Language language, Renderer renderer)
 	{
 		try
 		{
@@ -230,7 +228,7 @@ public class VimCoder
 		catch (Exception exception)
 		{
 			logError("An error occured while loading the problem: " +
-					 exception.getLocalizedMessage());
+				 exception.getLocalizedMessage());
 		}
 	}
 
