@@ -14,7 +14,7 @@ JAVACFLAGS	= -d . -sourcepath src -classpath $(library)
 
 
 classes		= $(sources:src/%.java=%.class)
-all: $(classes)
+all: $(firstword $(classes))
 
 clean:
 	rm -rf META-INF com
@@ -35,7 +35,7 @@ $(library):
 	mkdir -p lib
 	curl -o $@ http://www.topcoder.com/contest/classes/ContestApplet.jar
 
-$(jarfile): $(classes) META-INF/MANIFEST.MF
+$(jarfile): $(firstword $(classes)) META-INF/MANIFEST.MF
 	@echo "Packaging jar file..."
 	mkdir -p com/dogcows/resources
 	cp src/com/dogcows/resources/* com/dogcows/resources
