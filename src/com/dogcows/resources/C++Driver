@@ -90,7 +90,6 @@ std::istream& operator >> (std::istream& in, std::vector<T>& vec)
 			vec.push_back(t);
 			while (in.good() && std::isspace(in.peek())) in.get();
 		}
-
 	}
 	else
 	{
@@ -104,8 +103,8 @@ std::istream& operator >> (std::istream& in, std::vector<T>& vec)
 int main(int argc, char* argv[])
 {
 	bool	__exit_on_fail = false;
-	int		__pass = 0;
-	int		__fail = 0;
+	int	__pass = 0;
+	int	__fail = 0;
 	
 	if (1 < argc) __exit_on_fail = true;
 	
@@ -118,7 +117,7 @@ int main(int argc, char* argv[])
 		if (!__in.good()) break;
 		
 		std::cout << "----------------------------------------" << std::endl
-				  << "Test " << (__pass + __fail) << ": ";
+			  << "Test " << (__pass + __fail) << ": ";
 		std::cout.flush();
 		
 		__timer_start();
@@ -136,23 +135,23 @@ int main(int argc, char* argv[])
 		else
 		{
 			std::cout << "[FAIL] in " << __t << " seconds." << std::endl
-					  << "->  Input: " << $METHODPARAMSTREAMOUT$ << std::endl
-					  << "   Actual: " << __actual << std::endl
-					  << " Expected: " << __expected << std::endl;
+				  << "->  Input: " << $METHODPARAMSTREAMOUT$ << std::endl
+				  << "   Actual: " << __actual << std::endl
+				  << " Expected: " << __expected << std::endl;
 			++__fail;
 			if (__exit_on_fail) exit(1);
 		}
 	}
 
 	std::cout << "========================================" << std::endl
-			  << " Total Pass: " << __pass << std::endl
-			  << " Total Fail: " << __fail << std::endl;
+		  << " Total Pass: " << __pass << std::endl
+		  << " Total Fail: " << __fail << std::endl;
 
 	if (__fail == 0)
 	{
 		std::cout << std::endl << "Nice!  "
-				  << "Don't forget to compile remotely before submitting."
-				  << std::endl;
+			  << "Don't forget to compile remotely before submitting."
+			  << std::endl;
 	}
 
 	return __fail;

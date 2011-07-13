@@ -1,6 +1,6 @@
 
-CXX			:= g++
-CXXFLAGS	:= -O0 -g -Wall
+CXX		= g++
+CXXFLAGS	= -O0 -ggdb -Wall
 
 all: driver
 	
@@ -13,7 +13,7 @@ test: all
 driver.o: $CLASSNAME$.o
 
 driver: driver.o
-	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS) $(LIBS)
+	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS) $(LDLIBS)
 
 .PHONY: all run test
 
