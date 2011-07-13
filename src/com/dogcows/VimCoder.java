@@ -2,12 +2,12 @@
 package com.dogcows;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.border.*;
 
 import com.topcoder.client.contestApplet.common.Common;
 import com.topcoder.client.contestApplet.common.LocalPreferences;
@@ -237,65 +237,76 @@ public class VimCoder
 	 */
 	public void configure()
 	{
+		final int border = 10;
+		final int inset = 2;
+
 		loadConfiguration();
 
 		configDialog = new JDialog();
-		Container pane = configDialog.getContentPane();
+		Container container = configDialog.getContentPane();
+		container.setForeground(Common.FG_COLOR);
+		container.setBackground(Common.WPB_COLOR);
 
-		pane.setPreferredSize(new Dimension(550, 135));
-		pane.setLayout(new GridBagLayout());
-		pane.setForeground(Common.FG_COLOR);
-		pane.setBackground(Common.WPB_COLOR);
+		JPanel pane = new JPanel();
+		container.add(pane);
+
+		BoxLayout boxLayout = new BoxLayout(pane, BoxLayout.Y_AXIS);
+		pane.setLayout(boxLayout);
+		pane.setBorder(BorderFactory.createEmptyBorder(border, border, border, border));
+
+		JPanel fieldPanel = new JPanel(new GridBagLayout());
+		pane.add(fieldPanel);
+		pane.add(Box.createRigidArea(new Dimension(0, border)));
+
 		GridBagConstraints c = new GridBagConstraints();
-
-		JLabel rootDirLabel = new JLabel("Storage Directory:", SwingConstants.RIGHT);
-		rootDirLabel.setForeground(Common.FG_COLOR);
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.insets = new Insets(5, 5, 5, 5);
+		c.insets = new Insets(inset, inset, inset, inset);
+
+		JLabel rootDirLabel = new JLabel("Storage Directory:");
+		rootDirLabel.setForeground(Common.FG_COLOR);
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 1;
-		pane.add(rootDirLabel, c);
+		fieldPanel.add(rootDirLabel, c);
 
-		final JTextField rootDirField = new JTextField(rootDir.getPath(), 25);
+		final JTextField rootDirField = new JTextField(rootDir.getPath());
+		rootDirField.setPreferredSize(new Dimension(0, 24));
 		c.gridx = 1;
 		c.gridy = 0;
-		pane.add(rootDirField, c);
+		c.weightx = 1.0;
+		fieldPanel.add(rootDirField, c);
 
 		JButton browseButton = new JButton("Browse");
 		c.gridx = 2;
 		c.gridy = 0;
+		c.weightx = 0.0;
 		c.anchor = GridBagConstraints.BASELINE_LEADING;
-		pane.add(browseButton, c);
+		fieldPanel.add(browseButton, c);
 
-		JLabel vimCommandLabel = new JLabel("Vim Command:", SwingConstants.RIGHT);
+		JLabel vimCommandLabel = new JLabel("Vim Command:");
 		vimCommandLabel.setForeground(Common.FG_COLOR);
-		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 1;
-		pane.add(vimCommandLabel, c);
+		fieldPanel.add(vimCommandLabel, c);
 
-		final JTextField vimCommandField = new JTextField(vimCommand, 25);
+		final JTextField vimCommandField = new JTextField(vimCommand);
+		vimCommandField.setPreferredSize(new Dimension(0, 24));
 		c.gridx = 1;
 		c.gridy = 1;
+		c.weightx = 1.0;
 		c.gridwidth = 2;
-		pane.add(vimCommandField, c);
+		fieldPanel.add(vimCommandField, c);
 
-		JButton closeButton = new JButton("Cancel");
-		c.fill = GridBagConstraints.NONE;
-		c.gridx = 1;
-		c.gridy = 2;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.EAST;
-		pane.add(closeButton, c);
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING, inset, inset));
+		buttonPanel.setPreferredSize(new Dimension(400, 24 + 2 * inset));
+		pane.add(buttonPanel);
 
 		JButton saveButton = new JButton("Save");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 2;
-		c.gridy = 2;
-		c.anchor = GridBagConstraints.EAST;
-		pane.add(saveButton, c);
-		configDialog.getRootPane().setDefaultButton(saveButton);
+		buttonPanel.add(saveButton);
+		buttonPanel.add(Box.createRigidArea(new Dimension(1, 0)));
+
+		JButton closeButton = new JButton("Close");
+		buttonPanel.add(closeButton);
 
 		browseButton.addActionListener(new ActionListener()
 		{
@@ -328,13 +339,13 @@ public class VimCoder
 			{
 				prefs.setProperty(VIMCOMMAND, vimCommandField.getText());
 				prefs.setProperty(ROOTDIR, rootDirField.getText());
-				configDialog.dispose();
+				JOptionPane.showMessageDialog(null, "Preferences were saved successfully.");
 			}
 		});
 
 		configDialog.setTitle("VimCoder Preferences");
 		configDialog.pack();
-		configDialog.setLocationByPlatform(true);
+		configDialog.setLocationRelativeTo(null);	// Center dialog in screen.
 		configDialog.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
 		configDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		configDialog.setVisible(true);
