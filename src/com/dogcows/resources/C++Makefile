@@ -3,13 +3,13 @@ CXX		= g++
 CXXFLAGS	= -O0 -ggdb -Wall
 
 all: driver
-	
+
 run: all
 	./driver
-	
+
 test: all
 	./driver -exit_on_fail
-	
+
 driver.o: $CLASSNAME$.o
 
 driver: driver.o
