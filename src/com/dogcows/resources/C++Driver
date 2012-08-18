@@ -67,10 +67,6 @@ std::istream& operator >> (std::istream& in, std::string& str)
 		}
 		str = s.str();
 	}
-	else
-	{
-		in.putback(c);
-	}
 
 	return in;
 }
@@ -93,10 +89,6 @@ std::istream& operator >> (std::istream& in, std::vector<T>& vec)
 			vec.push_back(t);
 			while (in.good() && std::isspace(in.peek())) in.get();
 		}
-	}
-	else
-	{
-		in.putback(c);
 	}
 
 	return in;
