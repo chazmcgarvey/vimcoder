@@ -1,6 +1,8 @@
 
 #include "$CLASSNAME$.cc"
 
+#include <algorithm>
+#include <cmath>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -12,6 +14,7 @@
 using namespace std;
 
 
+const static double __EPSILON = 1e-9;
 static double __time = 0.0;
 
 static void __timer_start()
@@ -99,6 +102,38 @@ std::istream& operator >> (std::istream& in, std::vector<T>& vec)
 	return in;
 }
 
+template <class T>
+bool __equals(const T& actual, const T& expected)
+{
+	return actual == expected;
+}
+
+bool __equals(double actual, double expected)
+{
+	if (std::abs(actual - expected) < __EPSILON)
+	{
+		return true;
+	}
+	else
+	{
+		double minimum = std::min(expected * (1.0 - __EPSILON), expected * (1.0 + __EPSILON));
+		double maximum = std::max(expected * (1.0 - __EPSILON), expected * (1.0 + __EPSILON));
+		return actual > minimum && actual < maximum;
+	}
+}
+
+bool __equals(const std::vector<double>& actual, const std::vector<double>& expected)
+{
+	if (actual.size() != expected.size())
+		return false;
+
+	for (size_t i = 0; i < actual.size(); ++i)
+		if (!__equals(actual[i], expected[i]))
+			return false;
+
+	return true;
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -127,7 +162,7 @@ int main(int argc, char* argv[])
 		
 		double __t = __timer_stop();
 		
-		if (__actual == __expected)
+		if (__equals(__actual, __expected))
 		{
 			std::cout << "[PASS] in " << __t << " seconds." << std::endl;
 			++__pass;
