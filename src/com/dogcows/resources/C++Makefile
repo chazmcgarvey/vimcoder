@@ -15,5 +15,11 @@ driver.o: $CLASSNAME$.o
 driver: driver.o
 	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS) $(LDLIBS)
 
-.PHONY: all run test
+clean:
+	rm -f $CLASSNAME$.o driver.o driver
+
+distclean: clean
+	rm -f $CLASSNAME$
+
+.PHONY: all run test clean distclean
 
