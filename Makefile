@@ -1,13 +1,14 @@
 
-# Use this file with ``make'' to compile and package VimCoder.
+# Use this file with GNU make to compile and package VimCoder.
 # Supported targets: all clean distclean dist fetch jar
 
 project		= VimCoder
 version		= 0.3.2
 
-sources		= src/com/dogcows/VimCoder.java src/com/dogcows/Util.java src/com/dogcows/Editor.java
+sources		= $(wildcard src/com/dogcows/*.java)
 library		= lib/ContestApplet.jar
 jarfile		= $(project)-$(version).jar
+resources	= $(wildcard src/com/dogcows/resources/*)
 
 JAVAC		= javac
 JAVACFLAGS	= -d . -sourcepath src -classpath $(library)
@@ -30,12 +31,15 @@ fetch: $(library)
 jar: $(jarfile)
 
 
+$(classes): $(sources) $(library)
+	$(JAVAC) $(JAVACFLAGS) $<
+
 $(library):
 	@echo "Fetching dependencies..."
 	mkdir -p lib
 	curl -o $@ http://www.topcoder.com/contest/classes/ContestApplet.jar
 
-$(jarfile): $(firstword $(classes)) META-INF/MANIFEST.MF
+$(jarfile): $(classes) $(resources) META-INF/MANIFEST.MF
 	@echo "Packaging jar file..."
 	mkdir -p com/dogcows/resources
 	cp src/com/dogcows/resources/* com/dogcows/resources
@@ -43,10 +47,8 @@ $(jarfile): $(firstword $(classes)) META-INF/MANIFEST.MF
 	zip $@ META-INF/MANIFEST.MF COPYING README $$(find com -type f | sort)
 	@echo "Done."
 
-$(classes): $(sources) $(library)
-	$(JAVAC) $(JAVACFLAGS) $<
-
 META-INF/MANIFEST.MF:
+	@echo "Generating MANIFEST.MF..."
 	mkdir -p META-INF
 	printf "Manifest-Version: 1.0\n\n" >$@
 
