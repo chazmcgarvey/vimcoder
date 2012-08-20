@@ -22,7 +22,7 @@ static void __timer_start()
 	struct timeval tv;
 	if (gettimeofday(&tv, NULL) == 0)
 	{
-		__time = (double)tv.tv_sec + (double)tv.tv_usec * 0.000001;
+		__time = double(tv.tv_sec) + double(tv.tv_usec) * 0.000001;
 	}
 }
 
@@ -31,6 +31,12 @@ static double __timer_stop()
 	double start = __time;
 	__timer_start();
 	return __time - start;
+}
+
+
+static void __eat_whitespace(std::istream& in)
+{
+	while (in.good() && std::isspace(in.peek())) in.get();
 }
 
 
@@ -55,7 +61,7 @@ std::ostream& operator << (std::ostream& out, const std::vector<T>& vec)
 
 std::istream& operator >> (std::istream& in, std::string& str)
 {
-	while (in.good() && std::isspace(in.peek())) in.get();
+	__eat_whitespace(in);
 
 	int c;
 	if (in.good() && (c = in.get()) == '"')
@@ -74,25 +80,28 @@ std::istream& operator >> (std::istream& in, std::string& str)
 template <class T>
 std::istream& operator >> (std::istream& in, std::vector<T>& vec)
 {
-	while (in.good() && std::isspace(in.peek())) in.get();
+	__eat_whitespace(in);
 
 	int c;
 	if (in.good() && (c = in.get()) == '{')
 	{
-		while (in.good() && std::isspace(in.peek())) in.get();
-		T t;
+		__eat_whitespace(in);
 		vec.clear();
 		while (in.good() && (c = in.get()) != '}')
 		{
 			if (c != ',') in.putback(c);
+
+			T t;
 			in >> t;
+			__eat_whitespace(in);
+
 			vec.push_back(t);
-			while (in.good() && std::isspace(in.peek())) in.get();
 		}
 	}
 
 	return in;
 }
+
 
 template <class T>
 bool __equals(const T& actual, const T& expected)
