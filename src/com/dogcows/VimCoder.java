@@ -32,7 +32,7 @@ public class VimCoder
 	/**
 	 * The website of the plugin project.
 	 */
-	public final static String website = "http://www.dogcows.com/vimcoder";
+	public final static String website = "http://www.brokenzipper.com/trac/wiki/VimCoder";
 
 
 	/**
