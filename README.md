@@ -11,7 +11,8 @@ It aims to be minimal in comparison to other editors such as
 [CodeProcessor](http://www.topcoder.com/tc?module=Static&d1=applet&d2=plugins)
 plug-in chains while also providing enough functionality to also be useful.
 
-### Features
+Features
+--------
 
 * Works on any platform that the TopCoder Arena applet itself supports.
 * Works with any language supported by TopCoder.
@@ -23,19 +24,22 @@ plug-in chains while also providing enough functionality to also be useful.
 * Test-case "drivers" can be generated locally with the example test-case data
   (currently C++ only).
 
-### License
+License
+-------
 
 This software is licensed according to the terms and conditions of the
 [BSD 2-Clause License](http://www.opensource.org/licenses/bsd-license.php).
 Please see the COPYING file for more information.
 This project is neither supported nor endorsed by TopCoder, Inc.
 
-### Download
+Download
+--------
 
-The latest VimCoder jar files can be downloaded from
-[this FTP server](ftp://ftp.brokenzipper.com/pub/vimcoder/).
+The latest VimCoder jar file can be downloaded from the
+[vim.org script page](http://www.vim.org/scripts/script.php?script_id=3321).
 
-### Install
+Install
+-------
 
 Unfortunately, installation is a bit cumbersome, but it is what it is:
 
@@ -55,7 +59,8 @@ You should now be able select "Vim" (or whatever you entered the first
 field) as your editor from the pull-down list on any problem statement
 window.
 
-### Configure
+Configure
+---------
 
 Depending on your preference or system attributes, you may want or need to
 first configure the plug-in so that it will work how you want it to.  You can
@@ -106,7 +111,8 @@ command when it is invoked.  After changing this value and saving your
 preferences, the command you enter will be used the next time you open
 a problem.
 
-### Usage
+Usage
+-----
 
 To use VimCoder once it is installed and configured, go to a room in the
 TopCoder Arena applet and open one of the problems.  If you have set VimCoder
@@ -117,13 +123,14 @@ will see that the area usually devoted to editor will be used for log
 messages; you will do your actual coding in the Vim window that comes up.
 
 Just enter your code into the Vim window and use the regular TopCoder Arena
-applet buttons to compiled, test, and submit your code.
+applet buttons to compile, test, and submit your code.
 
 **Pro Tip:** If you accidentally close your Vim session, you can get it back
 by switching to a different editor and then switching back to VimCoder
 Alternatively, the session will also reappear if you switch languages.
 
-### Problem and Solution Files
+Storage Directory Structure
+---------------------------
 
 Knowing about the files created by VimCoder is useful if you ever need to do
 anything advanced with VimCoder.
@@ -214,7 +221,8 @@ extension.  You can open this file if you need to access this code for any
 reason (say, you messed up some code and need to revert back to the last time
 you saved from the TopCoder Arena applet).
 
-### Templates
+Templates
+---------
 
 VimCoder comes with default templates for C++ and Java, but you can create
 your own customized templates for any language supported by TopCoder.  To use
@@ -317,7 +325,8 @@ public class $CLASSNAME$ {
 Something like this should be saved in a filed named `JavaTemplate` in your
 VimCoder storage directory.
 
-### Gotchas
+Potential Pitfalls
+------------------
 
 ##### Vim Client/Server
 
