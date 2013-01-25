@@ -126,7 +126,7 @@ Just enter your code into the Vim window and use the regular TopCoder Arena
 applet buttons to compile, test, and submit your code.
 
 **Pro Tip:** If you accidentally close your Vim session, you can get it back
-by switching to a different editor and then switching back to VimCoder
+by switching to a different editor and then switching back to VimCoder.
 Alternatively, the session will also reappear if you switch languages.
 
 Storage Directory Structure
@@ -157,11 +157,11 @@ for your solution.
 This file contains the example test cases that are associated with the
 problem.  The format is pretty simple.  For each test case, there is one line
 for the expected return value followed by each of the method parameters, each
-on its own line.  This file typically read by the driver program (more on this
-later) in order to run the test cases against your code.  While you are coding
-a solution, you may also want to add additional test cases to make sure your
-code is doing what you think it is and to make sure your code doesn't mess up
-on edge cases for which an example test case was not provided.
+on its own line.  This file is typically read by the driver program (more on
+this later) in order to run the test cases against your code.  While you are
+coding a solution, you may also want to add additional test cases to make sure
+your code is doing what you think it is and to make sure your code doesn't
+mess up on edge cases for which an example test case was not provided.
 
 ##### Problem.html
 
@@ -174,10 +174,10 @@ typically shouldn't edit this file.
 
 If there exists a Makefile template for the selected language, it will also be
 filled out and saved in the problem directory.  The purpose of the Makefile is
-to compile your code locally.  Vim contains the command :make which you can
-use to interact with the Makefile.  You also shouldn't need to edit this file
-directly.  Exactly what happens when you use the :make command depends on the
-Makefile template.
+to compile your code locally.  You can execute targets in the Makefile using
+Vim's `:make` command.  You also shouldn't need to edit this file directly.
+Exactly what happens when you use the `:make` command depends on the Makefile
+template.
 
 If you are using the default Makefile template for C++, typing ":make" without
 any arguments will compile your code.  Typing ":make run" will run all of the
