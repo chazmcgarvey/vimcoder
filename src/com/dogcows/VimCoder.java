@@ -27,12 +27,12 @@ public class VimCoder
 	/**
 	 * The name and version of this plugin.
 	 */
-	public final static String version = "VimCoder 0.3.3";
+	public final static String version = "VimCoder 0.3.4";
 
 	/**
 	 * The website of the plugin project.
 	 */
-	public final static String website = "http://www.brokenzipper.com/trac/wiki/VimCoder";
+	public final static String website = "http://github.com/chazmcgarvey/vimcoder";
 
 
 	/**

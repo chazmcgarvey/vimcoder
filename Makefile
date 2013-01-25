@@ -3,7 +3,7 @@
 # Supported targets: all clean distclean dist fetch jar
 
 project		= VimCoder
-version		= 0.3.3
+version		= 0.3.4
 
 sources		= $(wildcard src/com/dogcows/*.java)
 library		= lib/ContestApplet.jar
