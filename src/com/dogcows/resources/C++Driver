@@ -138,11 +138,11 @@ bool __equals(const std::vector<double>& actual, const std::vector<double>& expe
 
 int main(int argc, char* argv[])
 {
-	bool	__exit_on_fail = false;
+	bool	__abort_on_fail = false;
 	int	__pass = 0;
 	int	__fail = 0;
 
-	if (1 < argc) __exit_on_fail = true;
+	if (1 < argc) __abort_on_fail = true;
 
 	std::ifstream __in("testcases.txt");
 	for(;;)
@@ -175,7 +175,7 @@ int main(int argc, char* argv[])
 				  << "   Actual: " << __actual << std::endl
 				  << " Expected: " << __expected << std::endl;
 			++__fail;
-			if (__exit_on_fail) exit(1);
+			if (__abort_on_fail) std::abort();
 		}
 	}
 
