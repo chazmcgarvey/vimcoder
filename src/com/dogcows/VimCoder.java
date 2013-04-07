@@ -409,3 +409,4 @@ public class VimCoder
 	}
 }
 
+// vim:noet:ts=8

@@ -193,3 +193,4 @@ int main(int argc, char* argv[])
 	return __fail;
 }
 
+// vim:ft=cpp:noet:ts=8

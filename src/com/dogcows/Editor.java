@@ -327,3 +327,4 @@ public class Editor
 	}
 }
 
+// vim:noet:ts=8

@@ -50,3 +50,4 @@ $(jarfile): $(classes) $(resources)
 
 .PHONY: all clean distclean dist fetch jar
 
+# vim:noet:ts=8

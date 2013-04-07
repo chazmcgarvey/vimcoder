@@ -23,3 +23,4 @@ distclean: clean
 
 .PHONY: all run test clean distclean
 
+# vim:ft=make:noet:ts=8

@@ -1,7 +1,6 @@
 
 // {{{ Boilerplate Code <--------------------------------------------------
-//
-// vim:filetype=cpp foldmethod=marker foldmarker={{{,}}}
+// vim:filetype=cpp:foldmethod=marker:foldmarker={{{,}}}
 
 #include <algorithm>
 #include <bitset>
@@ -23,9 +22,9 @@
 #include <utility>
 #include <vector>
 
-#define FOR(I,A,B)	for(int I = (A); I < (B); ++I)
-#define REP(I,N)	FOR(I,0,N)
-#define ALL(A)		(A).begin(), (A).end()
+#define FOR(I,A,B) for(int I = (A); I < (B); ++I)
+#define REP(I,N)   FOR(I,0,N)
+#define ALL(A)     (A).begin(), (A).end()
 
 using namespace std;
 
