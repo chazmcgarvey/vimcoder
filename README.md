@@ -55,9 +55,8 @@ Unfortunately, installation is a bit cumbersome, but it is what it is:
 8. Click "OK" to close the window with the three fields.
 9. Click "Save."
 
-You should now be able select "Vim" (or whatever you entered the first
-field) as your editor from the pull-down list on any problem statement
-window.
+You should now be able select "Vim" (or whatever you entered into the first
+field) as your editor from the pull-down list on any problem statement window.
 
 Configure
 ---------
@@ -104,9 +103,9 @@ You may use an absolute path to your vim executable, such as
 or wherever your actual Vim executable is.  You may also invoke vim through
 some other command (e.g. `xterm -e vim`).
 
-The xterm example demonstrates using Vim without the GUI, running in
-a terminal emulator.  You can enter any elaborate command you want as long Vim
-ultimately gets executed with the arguments that will be appended to the
+The xterm example above demonstrates using Vim without the GUI, running in
+a terminal emulator.  You can enter any elaborate command you want as long as
+Vim ultimately gets executed with the arguments that will be appended to the
 command when it is invoked.  After changing this value and saving your
 preferences, the command you enter will be used the next time you open
 a problem.
@@ -117,29 +116,29 @@ Usage
 To use VimCoder once it is installed and configured, go to a room in the
 TopCoder Arena applet and open one of the problems.  If you have set VimCoder
 as your default editor, you will see the usual problem statement window come
-up as well as a Vim editor window.  Otherwise, you can change the editor from
-the problem statement window, and the Vim editor window will come up.  You
-will see that the area usually devoted to editor will be used for log
+up as well as a separate Vim editor window.  Otherwise, you can change the
+editor from the problem statement window, and the Vim editor window will come
+up.  You will see that the area usually devoted to editor will be used for log
 messages; you will do your actual coding in the Vim window that comes up.
 
 Just enter your code into the Vim window and use the regular TopCoder Arena
 applet buttons to compile, test, and submit your code.
 
 **Pro Tip:** If you accidentally close your Vim session, you can get it back
-by switching to a different editor and then switching back to VimCoder.
-Alternatively, the session will also reappear if you switch languages.
+by switching to a different editor (such as the default editor) and then
+switching back to VimCoder.  Alternatively, the session will also reappear
+(and load a buffer to a different source code file) if you switch languages.
 
 Storage Directory Structure
 ---------------------------
 
 Knowing about the files created by VimCoder is useful if you ever need to do
-anything advanced with VimCoder.
-
-When you open a problem, VimCoder will check to see if you have already opened
-that problem by looking for the problem and solution files.  If these files
-are found, it will load your previous work.  Otherwise, it will fill out the
-templates based on the problem class name, parameter types, and so on, and
-will create several files in a sub-directory of the main storage directory:
+anything advanced.  When you open a problem, VimCoder will check to see if you
+have already opened that problem by looking for the problem and solution
+files.  If these files are found, it will load your previous work.  Otherwise,
+it will fill out the templates based on the problem class name, parameter
+types, and so on, and will create several files in a sub-directory of the main
+storage directory:
 
 ##### `$CLASSNAME$`.`$LANGUAGE$`
 
@@ -156,28 +155,32 @@ for your solution.
 
 This file contains the example test cases that are associated with the
 problem.  The format is pretty simple.  For each test case, there is one line
-for the expected return value followed by each of the method parameters, each
-on its own line.  This file is typically read by the driver program (more on
-this later) in order to run the test cases against your code.  While you are
-coding a solution, you may also want to add additional test cases to make sure
-your code is doing what you think it is and to make sure your code doesn't
-mess up on edge cases for which an example test case was not provided.
+for the expected return value followed by the inputs (i.e. the method
+arguments), in order, each on its own line.  The format of this file is meant
+to be easy for a human to write and easy for a program to read so that
+a driver program (more on this later) can easily be written to run the test
+cases against your code.
+
+While you are coding a solution, you may want to open this file in a new
+buffer (type ":e testcases.txt") and add additional test cases to make sure
+your code doesn't mess up on edge cases for which an example test case was not
+provided.
 
 ##### Problem.html
 
 This file contains the problem statement which is what you see in the top half
 of the problem window.  You can load this in a browser to read the particulars
 of the problem when you aren't running the TopCoder Arena applet.  You
-typically shouldn't edit this file.
+typically shouldn't edit this file, but it's up to you.
 
 ##### Makefile
 
 If there exists a Makefile template for the selected language, it will also be
 filled out and saved in the problem directory.  The purpose of the Makefile is
 to compile your code locally.  You can execute targets in the Makefile using
-Vim's `:make` command.  You also shouldn't need to edit this file directly.
-Exactly what happens when you use the `:make` command depends on the Makefile
-template.
+Vim's `:make` command.  You also shouldn't need to edit this file directly,
+but of course you can if the need does arise.  Exactly what happens when you
+use the `:make` command depends on the Makefile template.
 
 If you are using the default Makefile template for C++, typing ":make" without
 any arguments will compile your code.  Typing ":make run" will run all of the
@@ -234,8 +237,8 @@ VimCoder comes with default templates for C++ and Java, but you can create
 your own customized templates for any language supported by TopCoder.  To use
 your own template, you need to add a file to the storage directory with a file
 name depending on the language.  The file name should start with the name of
-the language and end with "Template" with no other file extension.  For
-example, if you wanted to create a C# template and your storage directory was
+the language and end with "Template" with no file extension.  For example, if
+you wanted to create a C# template and your storage directory was
 `/home/foo/.topcoder`, you would need to create the file
 `/home/foo/.topcoder/C#Template`.
 
@@ -270,21 +273,20 @@ and names.
 ----
 
 Other keywords are also available, but the rest are intended to be used in
-driver or Makefile templates.  You can also create these templates by adding
-specially-named files to the storage directory.  Driver templates are named
-starting with the name of the language and ending with "Driver" with no other
-file extension.  Similarly, Makefile templates are named starting with the
-name of the language and ending with "Makefile" with no other file extension.
+driver or Makefile templates, though any keyword can be used in any type of
+template.  You can create other types of templates by adding specially-named
+files to the storage directory.  Driver templates are named starting with the
+name of the language and ending with "Driver" with no file extension.
+Similarly, Makefile templates are named starting with the name of the language
+and ending with "Makefile" with no file extension.
 
-Drivers provide additional code to implement running the test cases.
-Currently, a default driver template is only provided for C++.  Makefiles
-should have the commands needed to compile the solution source code and/or
-make a driver program that will perform the tests.  Since there is only
-a driver template for C++, there is similarly only a default Makefile template
-provided for C++.  If you want automatic building and testing for one of the
-other languages, you will need to create a driver and Makefile template for
-that language.  Here are more keywords that may be useful for these types of
-templates:
+Drivers provide additional code that allows the test cases to be run against
+your solution.  Currently, Makefile and driver templates are only provided for
+the C++ language.  Makefiles should have the commands needed to compile the
+solution source code and/or make a driver program that will perform the tests.
+If you want automatic building and testing for one of the other languages, you
+will need to create a driver and Makefile template for that language.  Here
+are more keywords that may be useful for these types of templates:
 
 ##### `$METHODPARAMDECLARES$`
 
@@ -312,7 +314,7 @@ in the test case data from testcases.txt.
 ----
 
 To give you an idea of how this all fits together, here is an example template
-for Java:
+for Java, similar to the built-in default Java template:
 
 ```java
 import static java.lang.Math.*;
@@ -328,8 +330,10 @@ public class $CLASSNAME$ {
 }
 ```
 
-Something like this should be saved in a filed named `JavaTemplate` in your
-VimCoder storage directory.
+Notice that it looks just like regular code but has some keywords surrounded
+by dollar signs that will be expanded to real values.  Something like this
+could be saved in a filed named `JavaTemplate` in your VimCoder storage
+directory.
 
 Potential Pitfalls
 ------------------
