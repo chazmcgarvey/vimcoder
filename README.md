@@ -182,8 +182,7 @@ template.
 If you are using the default Makefile template for C++, typing ":make" without
 any arguments will compile your code.  Typing ":make run" will run all of the
 test cases against your code.  Typing ":make test" will also run the test
-cases against your code, up until the first failed test at which point it will
-abort.
+cases against your code, except it will abort at the first failed test.
 
 A Makefile template is not yet provided for any other language, but you can
 write one yourself if you are so inclined.  Read on to learn how templates
@@ -209,6 +208,13 @@ filled out and saved in the problem directory.  If the language was currently
 set to C++, the driver code would be in the driver.cc file.  You normally
 don't have to do anything with this file.  It just provides supporting code
 for running the test cases against your code.
+
+The driver should output TAP (Test Anything Protocol) so that tests can be run
+in a test harness such as [prove](http://search.cpan.org/perldoc?prove).  The
+default Makefile template has a `prove` target (type ":make prove") that can
+run the tests in a test harness; the test harness is `prove` unless otherwise
+configured.  TAP output is also very human-readable all by itself, so having
+a test harness isn't really required.
 
 A default driver template is currently only provided for the C++ language.
 You could write your own template if you wanted to.
