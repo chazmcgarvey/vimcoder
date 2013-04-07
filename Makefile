@@ -6,16 +6,17 @@ project		= VimCoder
 version		= 0.3.4
 
 sources		= $(wildcard src/com/dogcows/*.java)
+classes		= $(sources:src/%.java=%.class)
 library		= lib/ContestApplet.jar
 jarfile		= $(project)-$(version).jar
-resources	= $(wildcard src/com/dogcows/resources/*)
+resource_path	= com/dogcows/resources
+resources	= $(wildcard src/$(resource_path)/*)
 
 JAVAC		= javac
 JAVACFLAGS	= -d . -sourcepath src -classpath $(library)
 
 
-classes		= $(sources:src/%.java=%.class)
-all: $(firstword $(classes))
+all: $(classes) $(resources:src/%=%)
 
 clean:
 	rm -rf com
@@ -31,21 +32,23 @@ fetch: $(library)
 jar: $(jarfile)
 
 
-$(classes): $(sources) $(library)
-	$(JAVAC) $(JAVACFLAGS) $<
+$(classes): $(sources) | $(library)
+	$(JAVAC) $(JAVACFLAGS) $^
+
+$(resource_path):
+	mkdir -p "$@"
+
+$(resource_path)/%: src/$(resource_path)/% | $(resource_path)
+	cp "$<" "$@"
+
 
 $(library):
-	@echo "Fetching dependencies..."
 	mkdir -p lib
 	curl -o $@ http://www.topcoder.com/contest/classes/ContestApplet.jar
 
-$(jarfile): $(classes) $(resources)
-	@echo "Packaging jar file..."
-	mkdir -p com/dogcows/resources
-	cp src/com/dogcows/resources/* com/dogcows/resources
+$(jarfile): all
 	rm -f $@
 	jar cvf $@ COPYING README.md com
-	@echo "Done."
 
 
 .PHONY: all clean distclean dist fetch jar
