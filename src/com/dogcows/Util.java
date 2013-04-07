@@ -104,7 +104,7 @@ public abstract class Util
 	/**
 	 * Read a resource file into a string object.
 	 * The resources should be placed in the directory `resources'
-	 * underneath the parent directory of this class.	Reading resources
+	 * underneath the parent directory of this class.  Reading resources
 	 * packaged in a jar is allowable.
 	 * @param path Relative path to the resource.
 	 * @return The contents of the resource.

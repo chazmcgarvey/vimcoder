@@ -32,6 +32,16 @@ public class Editor
 	private String name;
 
 	/**
+	 * The name of the contest.
+	 */
+	private String contestName;
+
+	/**
+	 * The point value.
+	 */
+	private String points;
+
+	/**
 	 * The path of the current source file.
 	 */
 	private File sourceFile;
@@ -68,6 +78,8 @@ public class Editor
 	{
 		this.id = String.valueOf(component.getProblem().getProblemID());
 		this.name = component.getClassName();
+		this.contestName = component.getProblem().getRound().getContestName().replaceAll(" ", "-");
+		this.points = String.valueOf(component.getPoints().intValue());
 
 		// Make sure the top-level vimcoder directory exists.
 		File topDir = VimCoder.getStorageDirectory();
@@ -77,9 +89,24 @@ public class Editor
 		}
 
 		// Make sure the problem directory exists.
-		this.directory = new File(topDir, id);
-		if (!directory.isDirectory())
+		File newStyleDirectory = new File(new File(topDir, contestName), points);
+		File oldStyleDirectory = new File(topDir, id);
+		if (newStyleDirectory.isDirectory())
 		{
+			this.directory = newStyleDirectory;
+		}
+		else if (oldStyleDirectory.isDirectory())
+		{
+			this.directory = oldStyleDirectory;
+		}
+		else if (VimCoder.isContestDirNames())
+		{
+			this.directory = newStyleDirectory;
+			if (!directory.mkdirs()) throw new IOException(directory.getPath());
+		}
+		else
+		{
+			this.directory = oldStyleDirectory;
 			if (!directory.mkdirs()) throw new IOException(directory.getPath());
 		}
 
@@ -116,7 +143,7 @@ public class Editor
 
 		// Expand the template for the main class and write it to the current
 		// source file.
-		sourceFile = new File(directory, name + "." + ext);
+		this.sourceFile = new File(directory, name + "." + ext);
 		if (!sourceFile.canRead())
 		{
 			String text = Util.expandTemplate(readTemplate(lang + "Template"), terms);

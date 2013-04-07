@@ -54,6 +54,12 @@ public class VimCoder
 				   System.getProperty("file.separator") + ".vimcoder");
 	}
 
+	/**
+	 * Whether or not to use the contest name and point value as problem
+	 * directory names.
+	 */
+	private static boolean contestDirNames = false;
+
 
 	/**
 	 * The panel given to the Arena applet when it is requested.
@@ -87,6 +93,11 @@ public class VimCoder
 	private final static String ROOTDIR = "com.dogcows.VimCoder.config.rootdir";
 
 	/**
+	 * The key for the problem directory name preference.
+	 */
+	private final static String CONTESTDIRNAMES = "com.dogcows.VimCoder.config.contestdirnames";
+
+	/**
 	 * The preferences object for storing plugin settings.
 	 */
 	private static LocalPreferences prefs = LocalPreferences.getInstance();
@@ -108,6 +119,16 @@ public class VimCoder
 	public static File getStorageDirectory()
 	{
 		return rootDir;
+	}
+
+	/**
+	 * Get whether or not to save problems in a human-readable directory
+	 * structure.
+	 * @return The directory name setting.
+	 */
+	public static boolean isContestDirNames()
+	{
+		return contestDirNames;
 	}
 
 
@@ -283,16 +304,29 @@ public class VimCoder
 		c.anchor = GridBagConstraints.BASELINE_LEADING;
 		fieldPanel.add(browseButton, c);
 
+		final JCheckBox contestDirNamesButton = new JCheckBox(
+			"Store problems according to contest name and point value.",
+			contestDirNames
+		);
+		contestDirNamesButton.setForeground(Common.FG_COLOR);
+		contestDirNamesButton.setBackground(Common.WPB_COLOR);
+		contestDirNamesButton.setFont(rootDirLabel.getFont());
+		c.gridx = 1;
+		c.gridy = 1;
+		c.gridwidth = 2;
+		fieldPanel.add(contestDirNamesButton, c);
+
 		JLabel vimCommandLabel = new JLabel("Vim Command:");
 		vimCommandLabel.setForeground(Common.FG_COLOR);
 		c.gridx = 0;
-		c.gridy = 1;
+		c.gridy = 2;
+		c.gridwidth = 1;
 		fieldPanel.add(vimCommandLabel, c);
 
 		final JTextField vimCommandField = new JTextField(vimCommand);
 		vimCommandField.setPreferredSize(new Dimension(0, 24));
 		c.gridx = 1;
-		c.gridy = 1;
+		c.gridy = 2;
 		c.weightx = 1.0;
 		c.gridwidth = 2;
 		fieldPanel.add(vimCommandField, c);
@@ -339,6 +373,7 @@ public class VimCoder
 			{
 				prefs.setProperty(VIMCOMMAND, vimCommandField.getText());
 				prefs.setProperty(ROOTDIR, rootDirField.getText());
+				prefs.setProperty(CONTESTDIRNAMES, String.valueOf(contestDirNamesButton.isSelected()));
 				JOptionPane.showMessageDialog(null, "Preferences were saved successfully.");
 			}
 		});
@@ -362,6 +397,9 @@ public class VimCoder
 
 		String dir = prefs.getProperty(ROOTDIR);
 		if (dir != null) rootDir = new File(dir);
+
+		String cn  = prefs.getProperty(CONTESTDIRNAMES);
+		if (cn != null) contestDirNames = Boolean.parseBoolean(cn);
 	}
 
 
