@@ -37,6 +37,8 @@ prove: all
 %$(EXEEXT): %.cc
 	$(LINK.cc) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
+driver$(EXEEXT): $CLASSNAME$.cc
+
 .PHONY: all clean distclean run test prove
 
 # vim:ft=make:noet:ts=8
