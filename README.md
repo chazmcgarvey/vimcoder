@@ -87,7 +87,7 @@ use.  If you have already saved some problems to the previous storage
 directory, you may also want to actually move the directory to the new
 location so that VimCoder can find the work you've already done.
 
-Beginning with VimCoder 1.3.5, there is a new option for an alternative
+Beginning with VimCoder 0.3.5, there is a new option for an alternative
 directory structure.  It is not enabled by default, but it may be in the
 future.  Rather than having directories named after problem identifiers, the
 new structure uses two levels of directories.  On the first level, directories
