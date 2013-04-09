@@ -87,6 +87,21 @@ use.  If you have already saved some problems to the previous storage
 directory, you may also want to actually move the directory to the new
 location so that VimCoder can find the work you've already done.
 
+Beginning with VimCoder 1.3.5, there is a new option for an alternative
+directory structure.  It is not enabled by default, but it may be in the
+future.  Rather than having directories named after problem identifiers, the
+new structure uses two levels of directories.  On the first level, directories
+are named after the contest associated with the problem (e.g. SRM-144-DIV-1),
+and on the second level, directories are named after the problem's point value
+(e.g. 300).  This directory structure may be preferable if you ever want to
+browse your repository since the contest name and point values are more easily
+identifiable than the problem identifier.
+
+If this new directory structure is enabled, it will only apply to new
+problems.  VimCoder will not try to reorganize your current repository, though
+you are welcome to do it manually yourself if you would like to switch to the
+new directory structure.
+
 ##### Vim Command
 
 By default, VimCoder tries to invoke Vim using the `gvim` command (or
