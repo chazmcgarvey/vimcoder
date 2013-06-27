@@ -116,7 +116,7 @@ to something else.
 You may use an absolute path to your vim executable, such as
 `/usr/local/bin/gvim` or `C:\Program Files\Vim\vim73\gvim.exe`
 or wherever your actual Vim executable is.  You may also invoke vim through
-some other command (e.g. `xterm -e vim`).
+some other command (e.g. `xterm -e vim` or `gnome-terminal -e vim --`).
 
 The xterm example above demonstrates using Vim without the GUI, running in
 a terminal emulator.  You can enter any elaborate command you want as long as
