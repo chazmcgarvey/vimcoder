@@ -50,6 +50,11 @@ public class Editor
 	 * The path of the problem directory.
 	 */
 	private File directory;
+	
+	/**
+	 *  Commented footer for the currently selected language.
+	 */
+	private String commented_footer;
 
 
 	/**
@@ -193,6 +198,23 @@ public class Editor
 			writer.write(text);
 			writer.close();
 		}
+		
+		// Setup commented footer.
+		String comment = "//";
+		if(lang.equals("Python")){
+			comment = "#";
+		}
+		
+		String[] footer_lines = new String[]{
+			"Edited by VimCoder " + VimCoder.version,
+			VimCoder.website,
+			};
+		
+		this.commented_footer = "\n";
+		for(String line: footer_lines){
+			this.commented_footer += comment + " " + line + "\n";
+		}
+		this.commented_footer += "\n\n";
 	}
 
 	/**
@@ -217,10 +239,10 @@ public class Editor
 	 */
 	public String getSource() throws IOException
 	{
-		return Util.readFile(sourceFile) + "\n// Edited by " +
-		VimCoder.version + "\n// " + VimCoder.website + "\n\n";
-	}
 
+		return Util.readFile(sourceFile) + this.commented_footer;
+	}
+	
 
 	/**
 	 * Send a command to the Vim server.
