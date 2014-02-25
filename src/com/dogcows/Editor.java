@@ -205,10 +205,10 @@ public class Editor
 			comment = "#";
 		}
 		
-		String[] footer_lines = [
+		String[] footer_lines = new String[]{
 			"Edited by VimCoder " + VimCoder.version,
 			VimCoder.website,
-			];
+			};
 		
 		this.commented_footer = "\n";
 		for(String line: footer_lines){
