@@ -29,11 +29,6 @@ public class VimCoder
 	 */
 	public final static String version = "VimCoder 0.3.5";
 
-	/**
-	 * The website of the plugin project.
-	 */
-	public final static String website = "http://github.com/chazmcgarvey/vimcoder";
-
 
 	/**
 	 * The first part of the command used to invoke the Vim server.

@@ -1,5 +1,5 @@
 
-// {{{ Boilerplate Code <--------------------------------------------------
+// {{{ $VIMCODER$ <-----------------------------------------------------
 // vim:filetype=java:foldmethod=marker:foldmarker={{{,}}}
 
 import static java.lang.Math.*;

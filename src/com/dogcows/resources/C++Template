@@ -1,5 +1,5 @@
 
-// {{{ Boilerplate Code <--------------------------------------------------
+// {{{ $VIMCODER$ <-----------------------------------------------------
 // vim:filetype=cpp:foldmethod=marker:foldmarker={{{,}}}
 
 #include <algorithm>

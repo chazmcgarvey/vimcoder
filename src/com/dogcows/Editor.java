@@ -58,10 +58,10 @@ public class Editor
 	private static final Map<String,String> languageExtension = new HashMap<String,String>();
 	static
 	{
-		languageExtension.put("Java", "java");
-		languageExtension.put("C++", "cc");
-		languageExtension.put("C#", "cs");
-		languageExtension.put("VB", "vb");
+		languageExtension.put("Java",   "java");
+		languageExtension.put("C++",    "cc");
+		languageExtension.put("C#",     "cs");
+		languageExtension.put("VB",     "vb");
 		languageExtension.put("Python", "py");
 	}
 
@@ -115,16 +115,17 @@ public class Editor
 
 		// Set up the terms used for the template expansion.
 		HashMap<String,String> terms = new HashMap<String,String>();
-		terms.put("RETURNTYPE", component.getReturnType().getDescriptor(language));
-		terms.put("CLASSNAME", name);
-		terms.put("METHODNAME", component.getMethodName());
-		terms.put("METHODPARAMS", getMethodParams(component.getParamTypes(),
+		terms.put("RETURNTYPE",           component.getReturnType().getDescriptor(language));
+		terms.put("CLASSNAME",            name);
+		terms.put("METHODNAME",           component.getMethodName());
+		terms.put("METHODPARAMS",         getMethodParams(component.getParamTypes(),
 							  component.getParamNames(), language));
-		terms.put("METHODPARAMNAMES", Util.join(component.getParamNames(), ", "));
-		terms.put("METHODPARAMSTREAMIN", Util.join(component.getParamNames(), " >> "));
+		terms.put("METHODPARAMNAMES",     Util.join(component.getParamNames(), ", "));
+		terms.put("METHODPARAMSTREAMIN",  Util.join(component.getParamNames(), " >> "));
 		terms.put("METHODPARAMSTREAMOUT", Util.join(component.getParamNames(), " << \", \" << "));
-		terms.put("METHODPARAMDECLARES", getMethodParamDeclarations(component.getParamTypes(),
-									    component.getParamNames(), language));
+		terms.put("METHODPARAMDECLARES",  getMethodParamDeclarations(component.getParamTypes(),
+									     component.getParamNames(), language));
+		terms.put("VIMCODER",             VimCoder.version);
 
 		// Write the problem statement as an HTML file in the problem directory.
 		File problemFile = new File(directory, "Problem.html");
@@ -217,8 +218,7 @@ public class Editor
 	 */
 	public String getSource() throws IOException
 	{
-		return Util.readFile(sourceFile) + "\n// Edited by " +
-		VimCoder.version + "\n// " + VimCoder.website + "\n\n";
+		return Util.readFile(sourceFile);
 	}
 
 
