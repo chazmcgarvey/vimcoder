@@ -1,0 +1,51 @@
+import timeit
+
+passCount=0
+failCount=0
+abortOnFail=False
+if sys.argc > 1:
+	abortOnFail=True
+
+print("TAP version 13")
+with open("testcases.txt") as f:
+	lines = f.ReadLines()
+	i = 0
+	while True:
+		testnum = passCount + failCount + 1
+		expected = lines[i]
+		++i
+		methodParamNames = [ $METHODPARAMS$ ]
+		methodParamVals = lines[i].split()
+		++i
+
+		methodParamStr = ','.join(map(str, methodParamVals))
+
+		obj = $CLASSNAME$()
+		time = timeit.timeit('obj.$METHODNAME$()', number=1)
+		actual = obj.$METHODNAME$($METHODPARAMNAMES$)
+	
+		print("# test completed in " + time + "ms")
+		if actual == expected:
+			print("ok")
+			++passCount
+		else
+			print("not ok")
+			++failCount
+
+		print(" " + testnum + " must equal " + expected)
+
+		if abortOnFail:
+			exit()
+
+		if i == len(lines):
+			break
+	
+print("1.." << (passCount + failCount))
+print("# passed: " + passCount)
+print("# failed: " + failCount)
+
+if (numFailed == 0)
+	print("# Nice! Don't forget to compile remotely before submitting.")
+
+exit(failCount)	
+

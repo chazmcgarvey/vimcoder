@@ -1,0 +1,28 @@
+# The driver outputs TAP (Test Anything Protocol), so it can also be used with
+# any TAP test harness (e.g. prove).  Set the path to your test harness here,
+# then use the `prove' target to run the tests with that harness.
+PROVE		= prove
+PROVEFLAGS	= -e ""
+
+all: driver.py
+
+clean:
+	rm -f driver.py
+
+distclean: clean
+	rm -f $CLASSNAME$
+
+run: all
+	python ./driver.py
+
+test: all
+	python ./driver.py --abort-on-fail
+
+prove: all
+	$(PROVE) $(PROVEFLAGS) ./driver.py
+
+driver.py: $CLASSNAME$.py
+
+.PHONY: all clean distclean run test prove
+
+# vim:ft=make:noet:ts=8

@@ -1,0 +1,4 @@
+class $CLASSNAME$:
+	def $METHODNAME$(self, $METHODPARMS):
+		return None
+
