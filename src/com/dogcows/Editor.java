@@ -65,6 +65,36 @@ public class Editor
 		languageExtension.put("Python", "py");
 	}
 
+	private void findOrCreateContainerFolder(Language language) throws Exception {
+		String lang = language.getName();
+
+		String[] dirs = 
+		{ 
+			VimCoder.getStorageDirectory() + "/" + contestName + '/' + points + "/" + lang,
+			VimCoder.getStorageDirectory() + "/" + id + "/" + lang
+		};
+
+		// Make sure the problem directory exists.
+		//
+		for (String sDir : dirs) 
+		{
+			File dir = new File(sDir);
+
+			if (dir.isDirectory()) 
+			{
+				this.directory = dir;
+				break;
+			}
+		}
+
+		if (this.directory == null) 
+		{
+			int take = VimCoder.isContestDirNames() ? 0 : 1;
+			this.directory = new File(dirs[take]);
+			System.out.println("Making new folder " + directory);
+			if (!this.directory.mkdirs()) throw new IOException(directory.getPath());
+		}
+	}
 
 	/**
 	 * Construct an editor with the problem objects given us by the Arena.
@@ -81,37 +111,7 @@ public class Editor
 		this.contestName = component.getProblem().getRound().getContestName().replaceAll(" ", "-");
 		this.points = String.valueOf(component.getPoints().intValue());
 
-		// Make sure the top-level vimcoder directory exists.
-		File topDir = VimCoder.getStorageDirectory();
-		if (!topDir.isDirectory())
-		{
-			if (!topDir.mkdirs()) throw new IOException(topDir.getPath());
-		}
-
-		// Make sure the problem directory exists.
-		File newStyleDirectory = new File(new File(topDir, contestName), points);
-		File oldStyleDirectory = new File(topDir, id);
-		if (newStyleDirectory.isDirectory())
-		{
-			this.directory = newStyleDirectory;
-		}
-		else if (oldStyleDirectory.isDirectory())
-		{
-			this.directory = oldStyleDirectory;
-		}
-		else if (VimCoder.isContestDirNames())
-		{
-			this.directory = newStyleDirectory;
-			if (!directory.mkdirs()) throw new IOException(directory.getPath());
-		}
-		else
-		{
-			this.directory = oldStyleDirectory;
-			if (!directory.mkdirs()) throw new IOException(directory.getPath());
-		}
-
-		String lang = language.getName();
-		String ext = languageExtension.get(lang);
+		findOrCreateContainerFolder(language);
 
 		// Set up the terms used for the template expansion.
 		HashMap<String,String> terms = new HashMap<String,String>();
@@ -142,6 +142,8 @@ public class Editor
 			}
 		}
 
+		String lang = language.getName();
+		String ext = languageExtension.get(lang);
 		// Expand the template for the main class and write it to the current
 		// source file.
 		this.sourceFile = new File(directory, name + "." + ext);
