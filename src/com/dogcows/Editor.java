@@ -91,7 +91,6 @@ public class Editor
 		{
 			int take = VimCoder.isContestDirNames() ? 0 : 1;
 			this.directory = new File(dirs[take]);
-			System.out.println("Making new folder " + directory);
 			if (!this.directory.mkdirs()) throw new IOException(directory.getPath());
 		}
 	}
