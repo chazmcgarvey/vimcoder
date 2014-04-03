@@ -1,6 +1,13 @@
 import $CLASSNAME$
 import sys
-import timeit
+import time
+
+def execTest(methodParams, expected):
+	obj = $CLASSNAME$.$CLASSNAME$()
+	actual = eval('obj.$METHODNAME$(' + methodParams + ')')
+	return (actual, expected)
+
+print("TAP version 13")
 
 passCount=0
 failCount=0
@@ -8,44 +15,55 @@ abortOnFail=False
 if len(sys.argv) > 1:
 	abortOnFail=True
 
-print("TAP version 13")
 with open("testcases.txt") as f:
 	lines = f.readlines()
 	i = 0
 	while True:
 		testnum = passCount + failCount + 1
-		expected = lines[i]
-		++i
-		methodParamVals = lines[i].split()
-		++i
+		expected = eval(lines[i])
+		i += 1
+
+		methodParamVals = []
+		for p in range(0, $METHODPARAMCOUNT$):
+			methodParamVals.append(eval(lines[i].strip()))
+			i += 1
 
 		methodParamStr = ','.join(map(str, methodParamVals))
+		print("# input for test " + str(testnum) + ": " + methodParamStr)
 
-		obj = $CLASSNAME$.$CLASSNAME$()
-		time = timeit.timeit('obj.$METHODNAME$(' + methodParamStr' + ')', number=1)
-		actual = obj.$METHODNAME$(methodParamStr)
-	
-		print("# test completed in " + time + "ms")
+		elapsed = 0
+		try:
+			start = time.time()
+			(actual, expected) = execTest(methodParamStr, expected)
+			end = time.time()
+			elapsed = end - start
+		except Exception:
+			print("Exception thrown on parameters " + methodParamStr + ": ")
+			traceback.print_exc()
+			failCount += 1
+			continue
+
+		print("# test completed in " + str(elapsed) + " ms")
 		if actual == expected:
 			print("ok")
-			++passCount
+			passCount += 1
 		else:
 			print("not ok")
-			++failCount
+			failCount += 1
 
-		print(" " + testnum + " must equal " + expected)
+		print(str(actual) + " must equal " + str(expected))
 
-		if abortOnFail:
+		if abortOnFail and failCount > 0:
 			exit()
 
 		if i == len(lines):
 			break
 	
-print("1.." << (passCount + failCount))
-print("# passed: " + passCount)
-print("# failed: " + failCount)
+print("1.." + str(passCount + failCount))
+print("# passed: " + str(passCount))
+print("# failed: " + str(failCount))
 
-if (numFailed == 0):
+if failCount == 0:
 	print("# Nice! Don't forget to compile remotely before submitting.")
 
 exit(failCount)	

@@ -71,7 +71,7 @@ public class Editor
 		String[] dirs = 
 		{ 
 			VimCoder.getStorageDirectory() + "/" + contestName + '/' + points + "/" + lang,
-			VimCoder.getStorageDirectory() + "/" + id + "/" + lang
+			VimCoder.getStorageDirectory() + "/" + id + '/' + points + "/" + lang
 		};
 
 		// Make sure the problem directory exists.
@@ -121,6 +121,7 @@ public class Editor
 		terms.put("METHODPARAMS",         getMethodParams(component.getParamTypes(),
 							  component.getParamNames(), language));
 		terms.put("METHODPARAMNAMES",     Util.join(component.getParamNames(), ", "));
+		terms.put("METHODPARAMCOUNT",     "" + component.getParamNames().length);
 		terms.put("METHODPARAMSTREAMIN",  Util.join(component.getParamNames(), " >> "));
 		terms.put("METHODPARAMSTREAMOUT", Util.join(component.getParamNames(), " << \", \" << "));
 		terms.put("METHODPARAMDECLARES",  getMethodParamDeclarations(component.getParamTypes(),
