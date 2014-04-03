@@ -15,18 +15,33 @@ abortOnFail=False
 if len(sys.argv) > 1:
 	abortOnFail=True
 
+i = 0
 with open("testcases.txt") as f:
 	lines = f.readlines()
-	i = 0
 	while True:
+		def readNextVal():
+			global i
+			if lines[i].strip()[0] == '{':
+				arrParam = '['
+				while True:
+					curline = lines[i].strip()
+					arrParam += lines[i].strip('{}\n\r')
+					print(curline)
+					i += 1
+					if curline[-1] == '}':
+						arrParam += ']'
+						break
+				return eval(arrParam)
+			val = eval(lines[i])
+			i += 1
+			return val
+
 		testnum = passCount + failCount + 1
-		expected = eval(lines[i])
-		i += 1
+		expected = readNextVal()
 
 		methodParamVals = []
 		for p in range(0, $METHODPARAMCOUNT$):
-			methodParamVals.append(eval(lines[i].strip()))
-			i += 1
+			methodParamVals.append(readNextVal())
 
 		methodParamStr = ','.join(map(str, methodParamVals))
 		print("# input for test " + str(testnum) + ": " + methodParamStr)
