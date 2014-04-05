@@ -207,9 +207,6 @@ public class Editor
 	 */
 	public void setSource(String source) throws Exception
 	{
-		FileWriter writer = new FileWriter(new File(directory, name));
-		writer.write(source);
-		writer.close();
 		sendVimCommand("--remote-tab-silent", sourceFile.getPath());
 	}
 
