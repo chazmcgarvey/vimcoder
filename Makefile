@@ -3,7 +3,7 @@
 # Supported targets: all clean distclean dist fetch jar
 
 project		= VimCoder
-version		= 0.3.5
+version		= 0.3.6
 
 sources		= $(wildcard src/com/dogcows/*.java)
 classes		= $(sources:src/%.java=%.class)
