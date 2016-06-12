@@ -243,7 +243,7 @@ public class VimCoder
 		}
 		catch (Exception exception)
 		{
-			logError("An error occured while loading the problem: " +
+			logError("An error occurred while loading the problem: " +
 				 exception.getLocalizedMessage());
 		}
 	}
