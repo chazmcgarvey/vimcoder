@@ -1,0 +1,15 @@
+language: java
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+  - openjdk7
+  - openjdk6
+matrix:
+  fast_finish: true
+  allow_failures:
+    - jdk: openjdk6
+install:
+  - make fetch
+script:
+  - make
+  - make test

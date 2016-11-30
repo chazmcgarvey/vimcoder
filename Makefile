@@ -2,18 +2,20 @@
 # Use this file with GNU make to compile and package VimCoder.
 # Supported targets: all clean distclean dist fetch jar
 
-project		= VimCoder
-version		= 0.3.6
+project         = VimCoder
+version         = 0.3.6
 
-sources		= $(wildcard src/com/dogcows/*.java)
-classes		= $(sources:src/%.java=%.class)
-library		= lib/ContestApplet.jar
-jarfile		= $(project)-$(version).jar
-resource_path	= com/dogcows/resources
-resources	= $(wildcard src/$(resource_path)/*)
+sources         = $(wildcard src/com/dogcows/*.java)
+classes         = $(sources:src/%.java=%.class)
+library         = lib/ContestApplet.jar
+jarfile         = $(project)-$(version).jar
+resource_path   = com/dogcows/resources
+resources       = $(wildcard src/$(resource_path)/*)
 
-JAVAC		= javac
-JAVACFLAGS	= -d . -sourcepath src -classpath $(library)
+JAVAC           = javac
+JAVACFLAGS      = -d . -sourcepath src -classpath $(library)
+
+PROVE           = prove
 
 
 all: $(classes) $(resources:src/%=%)
@@ -30,6 +32,9 @@ dist:
 fetch: $(library)
 
 jar: $(jarfile)
+
+test: all
+	$(PROVE)
 
 
 $(classes): $(sources) | $(library)
@@ -51,6 +56,6 @@ $(jarfile): all
 	jar cvf $@ COPYING README.md com
 
 
-.PHONY: all clean distclean dist fetch jar
+.PHONY: all clean distclean dist fetch jar test
 
 # vim:noet:ts=8
