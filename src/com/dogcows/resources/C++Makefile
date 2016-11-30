@@ -35,7 +35,7 @@ prove: all
 
 
 %$(EXEEXT): %.cc
-	$(LINK.cc) $^ $(LOADLIBES) $(LDLIBS) -o $@
+	$(LINK.cc) $< $(LOADLIBES) $(LDLIBS) -o $@
 
 driver$(EXEEXT): $CLASSNAME$.cc
 
