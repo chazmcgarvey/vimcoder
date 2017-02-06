@@ -24,6 +24,11 @@ Features
 * Test-case "drivers" can be generated locally with the example test-case data
   (currently C++ only).
 
+Build Status
+------------
+
+[![Build Status](https://travis-ci.org/chazmcgarvey/vimcoder.svg?branch=master)](https://travis-ci.org/chazmcgarvey/vimcoder)
+
 License
 -------
 
