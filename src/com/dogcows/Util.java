@@ -98,7 +98,7 @@ public abstract class Util
             reader.close();
         }
 
-        return text.toString().replaceAll("\n", System.getProperty("line.separator"));
+        return text.toString();
     }
 
     /**
