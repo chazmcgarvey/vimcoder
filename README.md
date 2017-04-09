@@ -259,8 +259,8 @@ your own template, you need to add a file to the storage directory with a file
 name depending on the language.  The file name should start with the name of
 the language and end with "Template" with no file extension.  For example, if
 you wanted to create a C# template and your storage directory was
-`/home/foo/.topcoder`, you would need to create the file
-`/home/foo/.topcoder/C#Template`.
+`/home/foo/.vimcoder`, you would need to create the file
+`/home/foo/.vimcoder/C#Template`.
 
 A template is like a regular source code file with special keywords that will
 be replaced as the template is "filled out" whenever you open a new problem.
